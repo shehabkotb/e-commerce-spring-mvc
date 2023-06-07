@@ -1,10 +1,10 @@
 package com.vodafone.ecommerce.model;
 
 import com.vodafone.ecommerce.enums.Role;
+import com.vodafone.ecommerce.enums.Status;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -13,8 +13,8 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-@Table(name = "user_info")
-public class UserInfo {
+@Table(name = "user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,9 +22,10 @@ public class UserInfo {
     private String lastName;
     private String email;
     private String password;
-//    @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-//    @JoinTable(name = "user_roles" , joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id")
-//    ,inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
-//    private List<Role> roles=new ArrayList<>();
     private Role role;
+    private Status status;
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+    @OneToOne(mappedBy = "user")
+    private ShoppingCart cart;
 }
