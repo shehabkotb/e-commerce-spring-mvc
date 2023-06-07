@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Setter
 @Getter
@@ -15,9 +16,12 @@ import javax.persistence.*;
 @Table(name = "order_item")
 public class OrderItem {
     @Id
-    private Integer orderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    private Order order;
+    @ManyToOne
     private Product product;
     private long quantity;
+
 }
