@@ -21,6 +21,8 @@ public class Order {
     @CreationTimestamp
     LocalDateTime createdAt;
     private double totalPrice;
-    @OneToMany(mappedBy = "product")
-    private List<OrderItem> orderItemList;
+    @ManyToOne
+    private User user;
+    @OneToMany(mappedBy = "order")
+    List<OrderItem> orderItems;
 }
