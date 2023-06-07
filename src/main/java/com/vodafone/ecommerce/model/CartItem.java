@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Setter
 @Getter
@@ -15,10 +16,11 @@ import javax.persistence.*;
 @Table(name = "cart_item")
 public class CartItem {
     @Id
-    @Column(name = "cart_id")
-    private int ShoppingCartId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private ShoppingCart shoppingCart;
+    @ManyToOne
     private Product product;
     private long quantity;
 }
