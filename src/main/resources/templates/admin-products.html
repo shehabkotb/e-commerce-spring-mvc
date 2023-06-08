@@ -38,7 +38,7 @@
 <div class="container p-6 pt-3">
     <div class="d-flex justify-content-between mt-3 mb-4 p-2">
         <h2>Product Management</h2>
-        <button class="btn btn-outline-dark">Add Product</button>
+        <a class="btn btn-outline-dark align-middle" th:href="@{/admin/products/add}" >Add Product</a>
     </div>
     <div class="table-responsive">
         <table class="table">
@@ -59,46 +59,55 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row" class="border-0">
-                    <div class="p-2">
-                        <img src="https://bootstrapious.com/i/snippets/sn-cart/product-1.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
-                        <div class="ml-3 d-inline-block align-middle">
-                            <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">Timex Unisex Originals</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
-                        </div>
-                    </div>
-                </th>
-                <td class="border-0 align-middle"><strong>$79.00</strong></td>
-                <td class="border-0 align-middle"><strong>3</strong></td>
-                <td class="border-0 align-middle">
-                    <a href="#">edit</a> |
-                    <a href="#">remove</a>
-                </td>
-            </tr>
-            <tr>
+<!--            <tr>-->
+<!--                <th scope="row" class="border-0">-->
+<!--                    <section class="py-5">-->
+<!--                        <div class="container px-4 px-lg-5 mt-5">-->
+<!--                            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">-->
+<!--                                <div th:each="product :${products}" class="col mb-5">-->
+<!--                                    <div class="card h-100">-->
+<!--                                        &lt;!&ndash; Product image&ndash;&gt;-->
+<!--                                        <div class="card-img-top text-center" style="padding: 5px">-->
+<!--                                            <img class="img-fluid" th:src="${product.photoUrl}" alt="..." />-->
+<!--                                        </div>-->
+
+<!--                                        &lt;!&ndash; Product details&ndash;&gt;-->
+<!--                                        <div class="card-body p-4">-->
+<!--                                            <div class="text-center">-->
+<!--                                                &lt;!&ndash; Product name&ndash;&gt;-->
+<!--                                                <h5 th:text="${product.name}" class="fw-bolder">Fancy Product</h5>-->
+<!--                                                &lt;!&ndash; Product price&ndash;&gt;-->
+<!--                                                <span th:text="'$' + ${product.price}">price</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; Product actions&ndash;&gt;-->
+<!--                                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">-->
+<!--                                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/products/{productId}(productId=${product.id})}">View Details</a></div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </section>-->
+<!--                </th>-->
+<!--                <td class="border-0 align-middle"><strong>$79.00</strong></td>-->
+<!--                <td class="border-0 align-middle"><strong>3</strong></td>-->
+<!--                <td class="border-0 align-middle">-->
+<!--                    <a href="#">edit</a> |-->
+<!--                    <a href="#">remove</a>-->
+<!--                </td>-->
+<!--            </tr>-->
+            <tr th:each="product :${products}">
                 <th scope="row">
                     <div class="p-2">
-                        <img src="https://bootstrapious.com/i/snippets/sn-cart/product-2.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                        <img th:src="${product.photoUrl}" alt="" width="70" class="img-fluid rounded shadow-sm">
                         <div class="ml-3 d-inline-block align-middle">
-                            <h5 class="mb-0"><a href="#" class="text-dark d-inline-block">Lumix camera lense</a></h5><span class="text-muted font-weight-normal font-italic">Category: Electronics</span>
+                            <h5 class="mb-0"> <a th:text="${product.name}" href="#" class="text-dark d-inline-block"></a></h5>
+                            <span class="text-muted font-weight-normal font-italic" th:text="'Category: ' + ${product.category}"> </span>
                         </div>
                     </div>
-                </th>
-                <td class="align-middle"><strong>$79.00</strong></td>
-                <td class="align-middle"><strong>3</strong></td>
-                <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">
-                    <div class="p-2">
-                        <img src="https://bootstrapious.com/i/snippets/sn-cart/product-3.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
-                        <div class="ml-3 d-inline-block align-middle">
-                            <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block">Gray Nike running shoe</a></h5><span class="text-muted font-weight-normal font-italic">Category: Fashion</span>
-                        </div>
-                    </div>
-                <td class="align-middle"><strong>$79.00</strong></td>
-                <td class="align-middle"><strong>3</strong></td>
+                <td class="align-middle" th:text="${product.price}"><strong></strong></td>
+                <td class="align-middle" th:text="${product.stockQuantity}"><strong></strong></td>
                 <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
