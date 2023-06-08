@@ -15,4 +15,15 @@ public class AdminController {
     public String adminDashboard(Model model) {
         return "admin-dashboard";
     }
+
+    @GetMapping("admin/users")
+    public String adminUsersManagement(Model model) {
+        return "admin-users";
+    }
+
+    @GetMapping("admin/products")
+    public String adminProductManagement(Model model) {
+        return "admin-products";
+    }
+
 }
