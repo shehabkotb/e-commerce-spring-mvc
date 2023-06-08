@@ -22,4 +22,5 @@ public class Product {
     private String photoUrl;
     @Enumerated(EnumType.STRING)
     private Category category;
+    private long stockQuantity;
 }
