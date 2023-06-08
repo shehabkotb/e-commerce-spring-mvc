@@ -18,7 +18,7 @@ public class ShoppingCart {
     private long id;
     private double totalPrice;
     @OneToOne
-    private User user;
+    private UserEntity user;
     @OneToMany(mappedBy = "shoppingCart")
     List<CartItem> cartItems;
 }

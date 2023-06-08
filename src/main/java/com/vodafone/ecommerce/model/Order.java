@@ -22,7 +22,7 @@ public class Order {
     LocalDateTime createdAt;
     private double totalPrice;
     @ManyToOne
-    private User user;
+    private UserEntity user;
     @OneToMany(mappedBy = "order")
     List<OrderItem> orderItems;
 }
