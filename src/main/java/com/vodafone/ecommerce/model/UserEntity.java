@@ -3,6 +3,7 @@ package com.vodafone.ecommerce.model;
 import com.vodafone.ecommerce.enums.Role;
 import com.vodafone.ecommerce.enums.Status;
 import lombok.*;
+import net.bytebuddy.implementation.bind.annotation.Default;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,4 +32,5 @@ public class UserEntity {
     private List<Order> orders;
     @OneToOne(mappedBy = "user")
     private ShoppingCart cart;
+
 }
