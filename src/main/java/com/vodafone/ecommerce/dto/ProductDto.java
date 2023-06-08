@@ -1,5 +1,6 @@
 package com.vodafone.ecommerce.dto;
 
+import com.vodafone.ecommerce.enums.Category;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +12,6 @@ public class ProductDto {
     private String photoUrl;
     private String description;
     private double price;
+    private Category category;
+    private long stockQuantity;
 }
