@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <th:block th:replace="fragments/general.html :: header-files"/>
-    <title>Admin Products Management</title>
+    <title>Admin User Management</title>
 </head>
 <body>
 <th:block th:replace="fragments/general.html :: admin-nav"/>
@@ -29,12 +29,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user :${userEntity}">
+            <tr th:each="user :${UserEntity}">
                 <th class="border-0" scope="row">
                     <div class="p-2">
                         <div class="ml-3 d-inline-block align-middle">
-                            <h5 class="mb-0"><span class="text-dark d-inline-block align-middle" th:text="${user.userName}">User UserName</span></h5>
-                            <span class="text-muted font-weight-normal font-italic d-block" th:text="'Role: ' + ${user.role}">Category</span>
+                            <h5 class="mb-0"><span class="text-dark d-inline-block align-middle" th:text="${user.username}">User UserName</span></h5>
+                            <span class="text-muted font-weight-normal font-italic d-block" th:text="'Email: ' + ${user.email}">Email</span>
+<!--                            <span class="text-muted font-weight-normal font-italic d-block" th:text="'Role: ' + ${user.role}">Role</span>-->
                         </div>
                     </div>
                 </th>

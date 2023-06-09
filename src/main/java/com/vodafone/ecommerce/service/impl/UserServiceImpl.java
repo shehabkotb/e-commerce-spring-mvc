@@ -1,6 +1,9 @@
 package com.vodafone.ecommerce.service.impl;
 
+import com.vodafone.ecommerce.dto.UserEntityDto;
+import com.vodafone.ecommerce.enums.Role;
 import com.vodafone.ecommerce.enums.Status;
+import com.vodafone.ecommerce.mapper.UserMapper;
 import com.vodafone.ecommerce.model.ConfirmationToken;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.ConfirmationTokenRepository;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -52,13 +56,6 @@ public class UserServiceImpl implements UserService {
 
         message.setContent("To confirm your account, please click here : "   +links,"text/html; charset=utf-8");
 
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        mailMessage.setTo(user.getUserEmail());
-//        mailMessage.setSubject("Complete Registration!");
-//        mailMessage.setText("To confirm your account, please click here : "
-//                +links);
-//        mailMessage.setBcc();
-//        emailService.sendEmail(mailMessage);
         mailSender.send(message);
         System.out.println("Confirmation Token: " + confirmationToken.getConfirmationToken());
 
@@ -77,5 +74,18 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.ok("Email verified successfully!");
         }
         return ResponseEntity.badRequest().body("Error: Couldn't verify email");
+    }
+
+    @Override
+    public UserEntity saveAdmin(UserEntityDto userEntityDto) {
+        UserEntity user = UserMapper.mapToUser(userEntityDto);
+        user.setRole(Role.ADMIN);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public List<UserEntity> getAllAdmin() {
+
+        return userRepository.findByRole(Role.ADMIN);
     }
 }
