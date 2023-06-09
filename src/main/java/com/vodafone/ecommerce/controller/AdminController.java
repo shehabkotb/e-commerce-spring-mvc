@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -50,8 +51,29 @@ public class AdminController {
             model.addAttribute("product", productDto);
             return "admin-addProduct";
         }
-
         productService.saveProduct(productDto);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/products/{productId}/delete")
+    public String adminDeleteProduct(@PathVariable("productId")Long productId) {
+        productService.deleteProduct(productId);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/products/{productId}/edit")
+    public String adminEditProductForm(@PathVariable("productId") Long productId, Model model) {
+        ProductDto productDto = productService.findProductById(productId);
+        model.addAttribute("product", productDto);
+        return "admin-editProduct";
+    }
+    @PostMapping("/admin/products/edit")
+    public String adminEditProduct(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("product", productDto);
+            return "admin-editProduct";
+        }
+        productService.updateProduct(productDto);
         return "redirect:/admin/products";
     }
 }
