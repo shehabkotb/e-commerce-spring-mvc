@@ -18,4 +18,6 @@ public class UserEntityDto {
     @NotBlank(message = "Email Shouldn't be Null")
     private String email;
     private Role role;
+    @NotBlank(message = "password Should not be Empty")
+    private String password;
 }
