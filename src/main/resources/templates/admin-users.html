@@ -40,8 +40,9 @@
                     </div>
                 </th>
                 <td class="border-0 align-middle">
-                    <a href="#">edit</a> |
-                    <a href="#">remove</a>
+
+                    <a class="btn btn-primary" th:href="@{/admin/{adminId}/edit(adminId=${user.id})}">edit</a> |
+                    <a class="btn btn-primary" th:href="@{/admin/{adminId}/delete(adminId=${user.id})}">remove</a>
                 </td>
             </tr>
             </tbody>
