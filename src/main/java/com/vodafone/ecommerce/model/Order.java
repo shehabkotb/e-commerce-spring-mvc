@@ -17,10 +17,10 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @CreationTimestamp
     LocalDateTime createdAt;
-    private double totalPrice;
+    private Double totalPrice;
     @ManyToOne
     private UserEntity user;
     @OneToMany(mappedBy = "order")

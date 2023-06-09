@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header-files">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <!-- Favicon-->
+    <link rel="icon" th:href="@{/assets/favicon.ico}" type="image/x-icon"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <script th:src="@{/js/scripts.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+</head>
+
+<body>
+<!--Admin nav-bar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="admin-nav">
+    <div class="container">
+        <span class="navbar-brand" href="#">Admin Panel</span>
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#admin-navbarSupportedContent"
+                data-bs-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="admin-navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a aria-current="page" class="nav-link active" th:href="@{/admin}">Dashboard</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Customer nav-bar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="customer-nav">
+    <div class="container px-4 px-lg-5">
+        <span class="navbar-brand" href="#!">My E-Commerce</span>
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#customer-navbarSupportedContent"
+                data-bs-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="#customer-navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a aria-current="page" class="nav-link active" th:href="@{/}">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarDropdown" role="button">Shop</a>
+                    <ul aria-labelledby="navbarDropdown" class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#!">All Products</a></li>
+                        <li>
+                            <hr class="dropdown-divider"/>
+                        </li>
+                        <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex gap-2">
+                <button class="btn btn-outline-dark" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </button>
+                <a class="btn btn-outline-dark" th:href="@{/logout}">Logout</a>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Customer-Footer-->
+<footer class="py-5 bg-dark" th:fragment="customer-footer">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; My E-Commerce 2023</p></div>
+</footer>
+</body>
+
+</html>

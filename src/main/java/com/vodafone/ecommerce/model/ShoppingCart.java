@@ -15,8 +15,8 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private double totalPrice;
+    private Long id;
+    private Double totalPrice;
     @OneToOne
     private UserEntity user;
     @OneToMany(mappedBy = "shoppingCart")
