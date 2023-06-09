@@ -11,15 +11,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private String description;
-    private double price;
+    private Double price;
     private String photoUrl;
     @Enumerated(EnumType.STRING)
     private Category category;
+    private long stockQuantity;
 }

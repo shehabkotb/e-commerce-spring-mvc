@@ -1,14 +1,26 @@
 package com.vodafone.ecommerce.dto;
 
+import com.vodafone.ecommerce.enums.Category;
 import lombok.Builder;
 import lombok.Data;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 public class ProductDto {
-    private long id;
+    private Long id;
+    @NotBlank(message = "Product Should not be Empty")
     private String name;
     private String photoUrl;
+    @NotBlank(message = "Description Should not be Empty")
     private String description;
-    private double price;
+    @NotNull(message = "Price Should not be Null")
+    private Double price;
+    @NotNull(message = "Category name Should not be Null")
+    private Category category;
+    @Min(value = 1, message = "Min stockQuantity is 1")
+    private Long stockQuantity;
 }
