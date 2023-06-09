@@ -2,14 +2,49 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <th:block th:replace="fragments/general.html :: header-files"/>
-    <title>Admin Users Management</title>
+    <title>Admin Products Management</title>
 </head>
 <body>
 <th:block th:replace="fragments/general.html :: admin-nav"/>
 <!-- Page content-->
-<div class="container">
-    <div class="text-center mt-5">
-        <h1>User management</h1>
+<div class="container p-6 pt-3">
+    <div class="d-flex justify-content-between mt-3 mb-4 p-2">
+        <h2>User Management</h2>
+        <a class="btn btn-outline-dark align-middle" th:href="@{/admin/users/add}">Add Admin</a>
+    </div>
+    <div class="table-responsive">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="border-0 bg-light" scope="col">
+                    <div class="p-2 px-3 text-uppercase">User</div>
+                </th>
+                <th class="border-0 bg-light" scope="col">
+                    <div class="py-2 text-uppercase">Email</div>
+                </th>
+                <th class="border-0 bg-light" scope="col">
+                    <div class="py-2 text-uppercase">Role</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user :${userEntity}">
+                <th class="border-0" scope="row">
+                    <div class="p-2">
+                        <div class="ml-3 d-inline-block align-middle">
+                            <h5 class="mb-0"><span class="text-dark d-inline-block align-middle" th:text="${user.userName}">User UserName</span></h5>
+                            <span class="text-muted font-weight-normal font-italic d-block" th:text="'Role: ' + ${user.role}">Category</span>
+                        </div>
+                    </div>
+                </th>
+                <td class="border-0 align-middle">
+                    <a href="#">edit</a> |
+                    <a href="#">remove</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
