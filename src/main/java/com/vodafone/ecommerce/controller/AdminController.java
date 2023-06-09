@@ -9,6 +9,7 @@ import com.vodafone.ecommerce.service.ProductService;
 import com.vodafone.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ public class AdminController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping(value = {"/admin", "/admin/dashboard"})
     public String adminDashboard(Model model) {
@@ -74,6 +76,8 @@ public class AdminController {
             model.addAttribute("UserEntity", userEntityDto);
             return "admin-addAdmin";
         }
+        String encryptedPassword=passwordEncoder.encode(userEntityDto.getPassword());
+        userEntityDto.setPassword(encryptedPassword);
         userService.saveAdmin(userEntityDto);
         return "redirect:/admin/users";
 
