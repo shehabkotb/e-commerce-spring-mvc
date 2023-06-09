@@ -6,7 +6,7 @@ import com.vodafone.ecommerce.model.UserEntity;
 public class UserMapper {
     public static UserEntity mapToUser(UserEntityDto userEntityDto) {
         return UserEntity.builder()
-                .username(userEntityDto.getUserName())
+                .username(userEntityDto.getUsername())
                 .email(userEntityDto.getEmail())
                 .role(userEntityDto.getRole())
                 .build();
@@ -14,7 +14,7 @@ public class UserMapper {
 
     public static UserEntityDto mapToUserDto(UserEntity user) {
         return UserEntityDto.builder()
-                .userName(user.getUsername())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .build();

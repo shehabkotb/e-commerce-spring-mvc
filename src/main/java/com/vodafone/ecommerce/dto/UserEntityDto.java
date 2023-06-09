@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class UserEntityDto {
     private Long id;
     @NotBlank(message = "userName Should not be Empty")
-    private String userName;
+    private String username;
     @NotBlank(message = "Email Shouldn't be Null")
     private String email;
     private Role role;
