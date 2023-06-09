@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/general.html :: header-files"/>
+    <title>Admin Add-Admin</title>
+</head>
+<body>
+<th:block th:replace="fragments/general.html :: admin-nav"/>
+
+<!-- Page content-->
+<div class="container p-6 pt-3">
+    <div class="d-flex justify-content-between mt-3 mb-4 p-2">
+        <h2>User Management</h2>
+    </div>
+    <div>
+        <form method="post" th:action="@{/admin/{adminId}/edit(adminId=${UserEntity.id})}" th:object="${UserEntity}">
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="username">User Name</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="username" name="username" placeholder="User Name"
+                           th:field="*{username}"
+                           required="required"
+                           type="text">
+                    <p class="text-danger" th:errors="*{username}" th:if="${#fields.hasErrors('username')}"></p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="email">Email</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="email"
+                           name="email" placeholder="User Email"
+                           th:field="*{email}" required="required"
+                           type="text">
+                    <p class="text-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="password">Password</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="password" name="password" placeholder="Password"
+                           th:field="*{password}"
+                           required="required"
+                           type="password">
+                    <p class="text-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></p>
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="role">Role</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="role" name="role" placeholder="ADMIN" th:field="*{role}" type="text"
+                           th:readonly="true">
+                </div>
+            </div>
+
+                    <button class="btn btn-primary" type="submit">Update</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
