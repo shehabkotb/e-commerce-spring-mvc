@@ -17,10 +17,10 @@ import java.io.Serializable;
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @ManyToOne
     private ShoppingCart shoppingCart;
     @ManyToOne
     private Product product;
-    private long quantity;
+    private Long quantity;
 }
