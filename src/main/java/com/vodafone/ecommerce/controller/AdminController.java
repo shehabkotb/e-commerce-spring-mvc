@@ -2,8 +2,12 @@ package com.vodafone.ecommerce.controller;
 
 
 import com.vodafone.ecommerce.dto.ProductDto;
+import com.vodafone.ecommerce.dto.UserEntityDto;
 import com.vodafone.ecommerce.model.Product;
+import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.service.ProductService;
+import com.vodafone.ecommerce.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +20,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class AdminController {
 
-    @Autowired
-    ProductService productService;
+    private final ProductService productService;
+    private final UserService userService;
 
     @GetMapping(value = {"/admin", "/admin/dashboard"})
     public String adminDashboard(Model model) {
@@ -28,6 +33,7 @@ public class AdminController {
 
     @GetMapping("/admin/users")
     public String adminUsersManagement(Model model) {
+        model.addAttribute("UserEntity", userService.getAllAdmin());
         return "admin-users";
     }
 
@@ -46,12 +52,30 @@ public class AdminController {
 
     @PostMapping("/admin/products/add")
     public String adminSaveProduct(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("product", productDto);
             return "admin-addProduct";
         }
 
         productService.saveProduct(productDto);
         return "redirect:/admin/products";
+    }
+
+
+    @GetMapping("/admin/users/add")
+    public String adminAddAdmin(Model model) {
+        UserEntity user = new UserEntity();
+        model.addAttribute("UserEntity", user);
+        return "admin-addAdmin";
+    }
+    @PostMapping("/admin/users/add")
+    public String adminSaverAdmin(@Valid @ModelAttribute("UserEntity") UserEntityDto userEntityDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("UserEntity", userEntityDto);
+            return "admin-addAdmin";
+        }
+        userService.saveAdmin(userEntityDto);
+        return "redirect:/admin/users";
+
     }
 }
