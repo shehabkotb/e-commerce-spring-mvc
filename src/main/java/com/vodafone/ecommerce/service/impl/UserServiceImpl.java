@@ -1,17 +1,15 @@
 package com.vodafone.ecommerce.service.impl;
 
-import com.vodafone.ecommerce.dto.UserEntityDto;
+import com.vodafone.ecommerce.dto.AdminDto;
 import com.vodafone.ecommerce.enums.Role;
 import com.vodafone.ecommerce.enums.Status;
-import com.vodafone.ecommerce.mapper.UserMapper;
+import com.vodafone.ecommerce.mapper.AdminMapper;
 import com.vodafone.ecommerce.model.ConfirmationToken;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.ConfirmationTokenRepository;
 import com.vodafone.ecommerce.repository.UserRepository;
-import com.vodafone.ecommerce.service.EmailService;
 import com.vodafone.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -77,8 +75,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity saveAdmin(UserEntityDto userEntityDto) {
-        UserEntity user = UserMapper.mapToUser(userEntityDto);
+    public UserEntity saveAdmin(AdminDto adminDto) {
+        UserEntity user = AdminMapper.mapToAdmin(adminDto);
         user.setRole(Role.ADMIN);
         return userRepository.save(user);
     }
@@ -87,5 +85,23 @@ public class UserServiceImpl implements UserService {
     public List<UserEntity> getAllAdmin() {
 
         return userRepository.findByRole(Role.ADMIN);
+    }
+
+    @Override
+    public AdminDto findAdminById(Long adminId) {
+        UserEntity user = userRepository.findById(adminId).get();
+
+        return AdminMapper.mapToAdminDto(user) ;
+    }
+
+    @Override
+    public void updateClub(AdminDto admin) {
+        UserEntity user =AdminMapper.mapToAdmin(admin);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void delete(Long adminId) {
+        userRepository.deleteById(adminId);
     }
 }
