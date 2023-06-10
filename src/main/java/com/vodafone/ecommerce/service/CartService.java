@@ -3,6 +3,6 @@ package com.vodafone.ecommerce.service;
 import com.vodafone.ecommerce.dto.ProductDto;
 
 public interface CartService {
-    boolean isUserCartExist(String username);
-    void addProductToCart(ProductDto productDto, long quantity, String username);
+    boolean isUserCartExist(Long userId);
+    boolean addProductToCart(Long productId, Long quantity, Long userId);
 }
