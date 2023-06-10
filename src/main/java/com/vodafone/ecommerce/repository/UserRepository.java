@@ -11,12 +11,12 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByUsername(String username);
+
     UserEntity findByEmailIgnoreCase(String email);
 
     Boolean existsByEmail(String email);
+
     List<UserEntity> findByRole(Role role);
-
-
 
 
 }

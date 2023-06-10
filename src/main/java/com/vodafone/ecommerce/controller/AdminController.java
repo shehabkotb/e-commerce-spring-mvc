@@ -2,11 +2,11 @@ package com.vodafone.ecommerce.controller;
 
 
 import com.vodafone.ecommerce.dto.ProductDto;
-import com.vodafone.ecommerce.dto.AdminDto;
+import com.vodafone.ecommerce.dto.UserDto;
 import com.vodafone.ecommerce.model.Product;
 import com.vodafone.ecommerce.model.UserEntity;
+import com.vodafone.ecommerce.service.AdminService;
 import com.vodafone.ecommerce.service.ProductService;
-import com.vodafone.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,8 +24,8 @@ import javax.validation.Valid;
 public class AdminController {
 
     private final ProductService productService;
-    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final AdminService adminService;
 
     @GetMapping(value = {"/admin", "/admin/dashboard"})
     public String adminDashboard(Model model) {
@@ -34,7 +34,7 @@ public class AdminController {
 
     @GetMapping("/admin/users")
     public String adminUsersManagement(Model model) {
-        model.addAttribute("UserEntity", userService.getAllAdmin());
+        model.addAttribute("UserEntity", adminService.getAllAdmin());
         return "admin-users";
     }
 
@@ -69,47 +69,45 @@ public class AdminController {
         model.addAttribute("UserEntity", user);
         return "admin-addAdmin";
     }
+
     @PostMapping("/admin/users/add")
-    public String adminSaverAdmin(@Valid @ModelAttribute("UserEntity") AdminDto adminDto, BindingResult bindingResult, Model model) {
+    public String adminSaverAdmin(@Valid @ModelAttribute("UserEntity") UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("UserEntity", adminDto);
+            model.addAttribute("UserEntity", userDto);
             return "admin-addAdmin";
         }
-        String encryptedPassword=passwordEncoder.encode(adminDto.getPassword());
-        adminDto.setPassword(encryptedPassword);
-        userService.saveAdmin(adminDto);
+        String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
+        userDto.setPassword(encryptedPassword);
+        adminService.saveAdmin(userDto);
         return "redirect:/admin/users";
 
     }
 
     @GetMapping("/admin/{adminId}/edit")
     public String editAdminForm(@PathVariable("adminId") Long adminId, Model model) {
-        AdminDto user = userService.findAdminById(adminId);
+        UserDto user = adminService.findAdminById(adminId);
         model.addAttribute("UserEntity", user);
         return "admin-editAdmin";
     }
 
     @PostMapping("/admin/{adminId}/edit")
     public String updateAdmin(@PathVariable("adminId") Long adminId,
-                             @Valid @ModelAttribute("UserEntity") AdminDto admin,
-                             BindingResult result, Model model) {
-        if(result.hasErrors()) {
+                              @Valid @ModelAttribute("UserEntity") UserDto admin,
+                              BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("UserEntity", admin);
             return "admin-editAdmin";
         }
         admin.setId(adminId);
-        String encryptedPassword=passwordEncoder.encode(admin.getPassword());
+        String encryptedPassword = passwordEncoder.encode(admin.getPassword());
         admin.setPassword(encryptedPassword);
-        userService.updateClub(admin);
+        adminService.updateAdmin(admin);
         return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/{adminId}/delete")
-    public String deleteClub(@PathVariable("adminId")Long adminId) {
-        userService.delete(adminId);
+    public String deleteClub(@PathVariable("adminId") Long adminId) {
+        adminService.delete(adminId);
         return "redirect:/admin/users";
     }
-
-
-
 }

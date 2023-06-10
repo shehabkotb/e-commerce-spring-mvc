@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
-public class AdminDto {
+public class UserDto {
     private Long id;
     @NotBlank(message = "userName Should not be Empty")
     private String username;
