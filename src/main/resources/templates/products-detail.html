@@ -6,6 +6,10 @@
 </head>
 <body>
 <th:block th:replace="fragments/general.html :: customer-nav"/>
+<div class="alert alert-success alert-dismissible fade show text-center" role="alert" th:if="${param.success}">
+    Item Added Successfully
+    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
 <!-- Page content-->
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
@@ -23,7 +27,8 @@
                                 ipsam minima ea iste laborum vero?</p>
                 <div class="d-flex">
                     <input class="form-control text-center me-3" id="inputQuantity" style="max-width: 3rem" type="num" value="1"/>
-                    <a class="btn btn-outline-dark flex-shrink-0" type="button" th:href="#">
+                    <a class="btn btn-outline-dark flex-shrink-0"
+                       th:href="@{/user/{userId}/cart/{productId}/add(userId=${#authentication.getPrincipal().getId()}, productId=${product.id})}" type="button">
                         <i class="bi-cart-fill me-1"></i>
                         Add to cart
                     </a>
