@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+
 @Controller
 @AllArgsConstructor
 public class AdminController {
@@ -26,6 +27,7 @@ public class AdminController {
     private final ProductService productService;
     private final PasswordEncoder passwordEncoder;
     private final AdminService adminService;
+
 
     @GetMapping(value = {"/admin", "/admin/dashboard"})
     public String adminDashboard(Model model) {
@@ -53,10 +55,12 @@ public class AdminController {
 
     @PostMapping("/admin/products/add")
     public String adminSaveProduct(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, Model model) {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("product", productDto);
             return "admin-addProduct";
         }
+
 
         productService.saveProduct(productDto);
         return "redirect:/admin/products";
@@ -109,5 +113,28 @@ public class AdminController {
     public String deleteClub(@PathVariable("adminId") Long adminId) {
         adminService.delete(adminId);
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/admin/products/{productId}/delete")
+    public String adminDeleteProduct(@PathVariable("productId") Long productId) {
+        productService.deleteProduct(productId);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/products/{productId}/edit")
+    public String adminEditProductForm(@PathVariable("productId") Long productId, Model model) {
+        ProductDto productDto = productService.findProductById(productId);
+        model.addAttribute("product", productDto);
+        return "admin-editProduct";
+    }
+
+    @PostMapping("/admin/products/edit")
+    public String adminEditProduct(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("product", productDto);
+            return "admin-editProduct";
+        }
+        productService.updateProduct(productDto);
+        return "redirect:/admin/products";
     }
 }

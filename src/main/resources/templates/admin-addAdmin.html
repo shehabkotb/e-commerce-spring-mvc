@@ -10,21 +10,21 @@
 <!-- Page content-->
 <div class="container p-6 pt-3">
     <div class="d-flex justify-content-between mt-3 mb-4 p-2">
-        <h2>User Management</h2>
+        <h2>Add Admin</h2>
     </div>
     <div>
         <form method="post" th:action="@{/admin/users/add}" th:object="${UserEntity}">
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label" for="username">User Name</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="username" name="username" placeholder="User Name" th:field="*{username}" required="required" type="text">
+                    <input class="form-control" id="username" name="username" placeholder="User Name" required="required" th:field="*{username}" type="text">
                     <p class="text-danger" th:errors="*{username}" th:if="${#fields.hasErrors('username')}"></p>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label" for="email">Email</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="email" name="email" placeholder="User Email" th:field="*{email}" required="required" type="text">
+                    <input class="form-control" id="email" name="email" placeholder="User Email" required="required" th:field="*{email}" type="text">
                     <p class="text-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></p>
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label" for="password">Password</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="password" name="password" placeholder="Password" th:field="*{password}" required="required" type="password">
+                    <input class="form-control" id="password" name="password" placeholder="Password" required="required" th:field="*{password}" type="password">
                     <p class="text-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></p>
                 </div>
             </div>
@@ -41,21 +41,20 @@
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label" for="role">Role</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="role" name="role" placeholder="ADMIN" th:field="*{role}" type="text"
-                           th:readonly="true">
+                    <input class="form-control" id="role" name="role" placeholder="ADMIN" th:field="*{role}" th:readonly="true" type="text">
                 </div>
             </div>
 
 
-<!--            <div class="row mb-3">-->
-<!--                <label class="col-sm-2 col-form-label" for="role">Role</label>-->
-<!--                <div class="col-sm-10">-->
-<!--                    <select aria-label="Default select example" class="form-select" id="role" name="role" th:field="*{role}">-->
-<!--                        <option th:each="role : ${T(com.vodafone.ecommerce.enums.Role).values()}" th:text="${role}" th:value="${role}"></option>-->
-<!--                    </select>-->
-<!--                    <p class="text-danger" th:errors="*{role}" th:if="${#fields.hasErrors('role')}"></p>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div class="row mb-3">-->
+            <!--                <label class="col-sm-2 col-form-label" for="role">Role</label>-->
+            <!--                <div class="col-sm-10">-->
+            <!--                    <select aria-label="Default select example" class="form-select" id="role" name="role" th:field="*{role}">-->
+            <!--                        <option th:each="role : ${T(com.vodafone.ecommerce.enums.Role).values()}" th:text="${role}" th:value="${role}"></option>-->
+            <!--                    </select>-->
+            <!--                    <p class="text-danger" th:errors="*{role}" th:if="${#fields.hasErrors('role')}"></p>-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="row mb-3">
                 <div class="col-sm-10">
                     <button class="btn btn-primary" type="submit">Create</button>

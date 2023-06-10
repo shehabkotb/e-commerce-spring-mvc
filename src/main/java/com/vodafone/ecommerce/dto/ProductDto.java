@@ -14,10 +14,11 @@ public class ProductDto {
     private Long id;
     @NotBlank(message = "Product Should not be Empty")
     private String name;
+    @NotBlank(message = "Photo Url Should not be Empty")
     private String photoUrl;
     @NotBlank(message = "Description Should not be Empty")
     private String description;
-    @NotNull(message = "Price Should not be Null")
+    @NotNull(message = "Price Should not be Empty")
     private Double price;
     @NotNull(message = "Category name Should not be Null")
     private Category category;
