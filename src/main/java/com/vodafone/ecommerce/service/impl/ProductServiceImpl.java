@@ -5,11 +5,9 @@ import com.vodafone.ecommerce.mapper.ProductMapper;
 import com.vodafone.ecommerce.model.Product;
 import com.vodafone.ecommerce.repository.ProductRepository;
 import com.vodafone.ecommerce.service.ProductService;
-import com.vodafone.ecommerce.util.ProductInitializr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +19,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductRepository productRepository;
+
     @Override
     public List<ProductDto> findAllProducts() {
         return productRepository.findAll().stream().map(ProductMapper::mapToProductDto).collect(Collectors.toList());
@@ -56,4 +55,5 @@ public class ProductServiceImpl implements ProductService {
         Product product = mapToProduct(productDto);
         productRepository.save(product);
     }
+
 }

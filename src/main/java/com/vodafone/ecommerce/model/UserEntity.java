@@ -31,4 +31,5 @@ public class UserEntity {
     private List<Order> orders;
     @OneToOne(mappedBy = "user")
     private ShoppingCart cart;
+
 }
