@@ -1,5 +1,6 @@
 package com.vodafone.ecommerce.controller;
 
+import com.vodafone.ecommerce.dto.CartItemDto;
 import com.vodafone.ecommerce.security.SecurityUtil;
 import com.vodafone.ecommerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,10 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @GetMapping("/cart")
-    public String getCart(Model model) {
+    @GetMapping("/user/{userId}/cart")
+    public String getCart(@PathVariable("userId") Long userId, Model model) {
+        model.addAttribute("cartItemsDto", cartService.getUserCart(userId));
+        model.addAttribute("totalPrice", cartService.getCartTotalPrice(userId));
         return "customer-cart";
     }
 
@@ -34,4 +37,9 @@ public class CartController {
         return "redirect:/products/" + productId + "?failed=true";
     }
 
+    @PostMapping("/user/{userId}/cart/{productId}/delete")
+    public String deleteProductFromCart(@PathVariable("userId") Long userId, @PathVariable("productId") Long productId) {
+        cartService.deleteProductFromCart(userId, productId);
+        return "redirect:/user/{userId}/cart";
+    }
 }
