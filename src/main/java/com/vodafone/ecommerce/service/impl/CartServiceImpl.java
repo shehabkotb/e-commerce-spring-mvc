@@ -109,8 +109,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteProductFromCart(Long userId, Long productId) {
-        CartItem cartItem = cartItemRepository.findByProductId(productId);
         ShoppingCart cart = cartRepository.findByUserId(userId);
+        CartItem cartItem = cartItemRepository.findByShoppingCartIdAndProductId(cart.getId(), productId);
         Product product = productRepository.findById(productId).orElseThrow();
         cart.setTotalPrice(cart.getTotalPrice() - (product.getPrice() * cartItem.getQuantity()));
         product.setStockQuantity(product.getStockQuantity() + cartItem.getQuantity());
@@ -121,8 +121,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean updateCartProduct(Long userId, Long productId, Long newQuantity) {
-        CartItem cartItem = cartItemRepository.findByProductId(productId);
         ShoppingCart cart = cartRepository.findByUserId(userId);
+        CartItem cartItem = cartItemRepository.findByShoppingCartIdAndProductId(cart.getId(), productId);
         Product product = productRepository.findById(productId).orElseThrow();
         Long availableQuantity = product.getStockQuantity()+cartItem.getQuantity();
         if (availableQuantity >= newQuantity) {
