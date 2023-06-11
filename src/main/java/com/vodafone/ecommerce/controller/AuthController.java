@@ -41,7 +41,7 @@ public class AuthController {
         }
 
         userService.saveUser(registrationDto);
-        return "redirect:/login?success&message=Registered successfully";
+        return "redirect:/login?success";
     }
 
     @GetMapping("/reset")

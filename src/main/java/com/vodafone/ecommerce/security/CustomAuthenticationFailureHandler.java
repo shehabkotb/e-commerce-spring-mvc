@@ -6,6 +6,7 @@ import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -34,16 +35,23 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         UserEntity user = userRepository.findByUsername(username);
 
         if (user != null) {
-            Integer updatedFailureCount = user.getLoginFailureCount() + 1;
-            user.setLoginFailureCount(updatedFailureCount);
 
-            if (updatedFailureCount >= MAX_FAILED_ATTEMPTS) {
-                user.setStatus(Status.SUSPENDED);
-                exception = new LockedException("Your account has been locked due to 3 failed attempts. Reset account with your email");
+            if (exception.getCause() instanceof DisabledException) {
+                // email not verified
+                // do nothing pass through the disabled exception
             } else {
-                exception = new BadCredentialsException("Invalid Username or Password");
+                // account exists but failed login
+                Integer updatedFailureCount = user.getLoginFailureCount() + 1;
+                user.setLoginFailureCount(updatedFailureCount);
+
+                if (updatedFailureCount >= MAX_FAILED_ATTEMPTS) {
+                    user.setStatus(Status.SUSPENDED);
+                    exception = new LockedException("Your account has been locked due to 3 failed attempts. Reset account with your email");
+                } else {
+                    exception = new BadCredentialsException("Bad credentials");
+                }
+                userRepository.save(user);
             }
-            userRepository.save(user);
         }
 
         super.setDefaultFailureUrl("/login?error");

@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(registrationDto.getPassword()))
                 .role(Role.USER)
                 .status(Status.UNVERIFIED)
+                .loginFailureCount(0)
                 .build();
 
         UserEntity result = userRepository.save(user);
