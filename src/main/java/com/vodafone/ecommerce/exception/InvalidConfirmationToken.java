@@ -5,5 +5,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid Confirmation Token")
 public class InvalidConfirmationToken extends RuntimeException {
+    public InvalidConfirmationToken(String message) {
+        super(message);
+    }
 
 }

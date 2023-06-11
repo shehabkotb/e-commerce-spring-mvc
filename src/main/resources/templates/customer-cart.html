@@ -20,48 +20,30 @@
                                         <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
                                     </div>
                                     <hr class="my-4">
-
-                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                    <form method="post" th:each="cartItemDto :${cartItemsDto}" th:action="@{/user/{userId}/cart/{productId}/delete(userId=${#authentication.getPrincipal().getId()},productId=${cartItemDto.productDto.id})}">
+                                    <div class="row mb-4 d-flex justify-content-between align-items-center" >
                                         <div class="col-md-2 col-lg-2 col-xl-2">
-                                            <img alt="Cotton T-shirt" class="img-fluid rounded-3"
-                                                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img6.webp">
+                                            <img alt="..." class="img-fluid rounded-3"
+                                                 th:src="${cartItemDto.productDto.photoUrl}">
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-3">
-                                            <h6 class="text-muted">Shirt</h6>
-                                            <h6 class="text-black mb-0">Cotton T-shirt</h6>
+                                            <h6 class="text-muted" th:text="${cartItemDto.productDto.category}"></h6>
+                                            <h6 class="text-black mb-0" th:text="${cartItemDto.productDto.name}"></h6>
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                            <input class="form-control form-control-sm" id="form2" min="0" name="quantity" type="number" value="1"/>
+                                            <input class="form-control form-control-sm" th:value="${cartItemDto.quantity}" id="form2" min="0" name="quantity" type="number"/>
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h6 class="mb-0">€ 44.00</h6>
+                                            <h6 class="mb-0" th:text="${cartItemDto.productDto.price}"></h6>
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 px-1">
-                                            <a href="#!"><i class="bi bi-trash-fill text-danger"></i></a>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-4">
-
-                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                            <img alt="Cotton T-shirt" class="img-fluid rounded-3"
-                                                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img6.webp">
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xl-3">
-                                            <h6 class="text-muted">Shirt</h6>
-                                            <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                                        </div>
-                                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                            <input class="form-control form-control-sm" id="form2" min="0" name="quantity" type="number" value="1"/>
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h6 class="mb-0">€ 44.00</h6>
+                                            <button type="submit"><i class="bi bi-trash-fill text-danger"></i></button>
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 px-1">
-                                            <a href="#!"><i class="bi bi-trash-fill text-danger"></i></a>
+                                            <button type="submit"><i class="bi bi-trash-fill text-danger"></i></button>
                                         </div>
                                     </div>
+                                    </form>
 
                                     <hr class="my-4">
 
@@ -80,17 +62,17 @@
                                     <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
                                     <hr class="my-4">
 
-                                    <div class="d-flex justify-content-between mb-4">
-                                        <h5>Total Items</h5>
-                                        <h5>2</h5>
-                                    </div>
+<!--                                    <div class="d-flex justify-content-between mb-4">-->
+<!--                                        <h5>Total Items</h5>-->
+<!--                                        <h5 th:text="${}"></h5>-->
+<!--                                    </div>-->
 
                                     <div class="d-flex justify-content-between mb-5">
                                         <h5 class="text-uppercase">Total price</h5>
-                                        <h5>$ 137.00</h5>
+                                        <h5 th:text="${totalPrice}"></h5>
                                     </div>
 
-                                    <button class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark" type="button">Checkout</button>
+                                    <a th:href="@{/checkout/{userId}(userId=${#authentication.getPrincipal().getId()})}" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Checkout</a>
 
                                 </div>
                             </div>
