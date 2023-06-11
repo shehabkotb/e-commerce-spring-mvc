@@ -30,7 +30,7 @@ public class PaymentCardController {
 
     }
     @PostMapping(value = "/webapi/payments")
-    public PaymentCard getCardDetails(@RequestBody PaymentCard paymentCard)  {
+    public String getCardDetails(@RequestBody PaymentCard paymentCard)  {
         return paymentCardService.getCardDetails(paymentCard);
     }
 

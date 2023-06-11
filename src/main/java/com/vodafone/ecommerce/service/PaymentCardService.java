@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface PaymentCardService {
      List<PaymentCard> getCardList();
-    PaymentCard getCardDetails( PaymentCard paymentCard);
+    String getCardDetails( PaymentCard paymentCard);
 }

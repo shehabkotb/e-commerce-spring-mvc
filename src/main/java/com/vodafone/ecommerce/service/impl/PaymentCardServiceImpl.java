@@ -1,6 +1,7 @@
 package com.vodafone.ecommerce.service.impl;
 
 import com.vodafone.ecommerce.exception.InsufficientBalanceException;
+import com.vodafone.ecommerce.exception.InvalidCardException;
 import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.model.PaymentCard;
 import com.vodafone.ecommerce.service.PaymentCardService;
@@ -26,7 +27,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    public PaymentCard getCardDetails(PaymentCard paymentCard) {
+    public String getCardDetails(PaymentCard paymentCard) {
         String uri="http://localhost:8080/vending_machine/webapi/payments";
         HttpEntity<PaymentCard> request=new HttpEntity<>(paymentCard);
         PaymentCard paymentCard1 = null;
@@ -36,15 +37,20 @@ public class PaymentCardServiceImpl implements PaymentCardService {
         }catch (HttpClientErrorException exception){
             System.out.println(exception.getRawStatusCode());
             if (exception.getRawStatusCode()==404){
-                throw new NotFoundException("The Card You Enter Invalid") ;
+                throw new NotFoundException("The Card You Enter Not Found") ;
 
             }
             if (exception.getRawStatusCode()==400){
                 throw new InsufficientBalanceException("The Card doesn't have enough balance") ;
 
+            } if (exception.getRawStatusCode()==403){
+                throw new InvalidCardException("The Card is Invalid") ;
+
             }
 
+
+
         }
-        return paymentCard1;
+        return "Payment Granted Successfully";
     }
 }
