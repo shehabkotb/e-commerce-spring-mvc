@@ -3,6 +3,14 @@
 <head>
     <th:block th:replace="fragments/general.html :: header-files"/>
     <title>Browse Products</title>
+    <style>
+   body{ display:flex; flex-direction:column; min-height: 100vh; margin:0; }
+    section{ flex:1; }
+
+
+
+
+    </style>
 </head>
 <body>
 <th:block th:replace="fragments/general.html :: customer-nav"/>
@@ -17,11 +25,31 @@
     </div>
 </header>
 <!-- Section-->
-<section class="py-5">
+<section class="pt-3 pb-5">
+    <div class="container px-6 px-lg-5 mt-3 mb-2">
+        <div class="px-6">
+            <div class="d-flex justify-content-between">
+                <h2><strong>Products</strong></h2>
+                <div>
+                    <form class="d-flex" method="get" action="/products">
+                        <select aria-label="Default select example" class="form-select" id="searchBy" name="searchBy">
+                            <option text="Product Name" value="name">Product Name</option>
+                            <option text="Category" value="category">Category</option>
+                        </select>
+                        <input class="form-control" type="search" placeholder="Name or Category" aria-label="Search" id="query" name="query">
+                        <button class="btn btn-outline-dark" type="submit">Search</button>
+                        <a class="btn" th:href="@{/products}">Clear</a>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <div class="col mb-5" th:each="product :${products}">
                 <div class="card h-100">
+                    <div class="badge bg-dark text-white position-absolute" th:text="${product.category.name().toLowerCase()}" style="top: 1rem; right: 1rem">Category</div>
                     <!-- Product image-->
                     <div class="card-img-top text-center" style="padding: 5px">
                         <img alt="..." class="img-fluid" th:src="${product.photoUrl}"/>

@@ -1,8 +1,10 @@
 package com.vodafone.ecommerce.security;
 
+import com.vodafone.ecommerce.enums.Status;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +28,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity user = userRepository.findByUsername(username);
         if (user != null) {
 
+            boolean nonLocked = !user.getStatus().equals(Status.SUSPENDED);
+            boolean notVerified = user.getStatus().equals(Status.UNVERIFIED);
+
+            if (notVerified) {
+                throw new DisabledException("Email is not Verified");
+            }
+
             UserDetails authUser = CustomUserDetails.CustomUserDetailsBuilder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -34,12 +43,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .enabled(true)
                     .accountNonExpired(true)
                     .credentialsNonExpired(true)
-                    .accountNonLocked(true)
+                    .accountNonLocked(nonLocked)
                     .build();
 
             return authUser;
         } else {
-            throw new UsernameNotFoundException("Invalid username or password");
+            throw new UsernameNotFoundException("Bad credentials");
         }
     }
 }

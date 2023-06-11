@@ -25,6 +25,18 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll().stream().map(ProductMapper::mapToProductDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductDto> findAllProductsByCategory(String query) {
+        return productRepository.findAll().stream().filter((i) -> i.getCategory().name().toLowerCase().contains(query.toLowerCase()))
+                .map(ProductMapper::mapToProductDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> findAllProductsByName(String query) {
+        return productRepository.findAll().stream().filter((i) -> i.getName().toLowerCase().contains(query.toLowerCase()))
+                .map(ProductMapper::mapToProductDto).collect(Collectors.toList());
+    }
+
     //TODO: throw exception
     @Override
     public ProductDto findProductById(Long productId) {

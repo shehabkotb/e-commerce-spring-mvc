@@ -32,6 +32,6 @@ public class UserEntity {
     private List<Order> orders;
     @OneToOne(mappedBy = "user")
     private ShoppingCart cart;
-    @ColumnDefault(value = "0")
+    @ColumnDefault("0")
     private Integer loginFailureCount;
 }

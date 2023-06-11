@@ -2,6 +2,7 @@ package com.vodafone.ecommerce.service.impl;
 
 import com.vodafone.ecommerce.dto.UserDto;
 import com.vodafone.ecommerce.enums.Role;
+import com.vodafone.ecommerce.enums.Status;
 import com.vodafone.ecommerce.mapper.UserEntityMapper;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.UserRepository;
@@ -25,6 +26,8 @@ public class AdminServiceImpl implements AdminService {
     public UserDto saveAdmin(UserDto userDto) {
         UserEntity user = UserEntityMapper.mapToUserEntity(userDto);
         user.setRole(Role.ADMIN);
+        user.setLoginFailureCount(0);
+        user.setStatus(Status.ACTIVE);
         UserEntity result = userRepository.save(user);
         return UserEntityMapper.mapToUserDto(result);
     }
@@ -44,7 +47,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public UserDto updateAdmin(UserDto userDto) {
         UserEntity userEntity = UserEntityMapper.mapToUserEntity(userDto);
+        userEntity.setLoginFailureCount(0);
+        userEntity.setStatus(Status.ACTIVE);
         UserEntity result = userRepository.save(userEntity);
+
         return UserEntityMapper.mapToUserDto(result);
     }
 

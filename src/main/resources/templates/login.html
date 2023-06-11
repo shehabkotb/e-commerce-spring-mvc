@@ -25,6 +25,7 @@
 
 
 
+
     </style>
 </head>
 <body>
@@ -40,7 +41,7 @@
                         <div class="col-lg-10 col-xl-7 mx-auto">
                             <h3 class="display-4 mb-4">Login page</h3>
                             <div class="alert alert-success" role="alert" th:if="${param.success}">
-                                <span th:text="${param.message}"></span>
+                                <span>Registered successfully</span>
                             </div>
                             <div class="alert alert-danger" role="alert" th:if="${param.error}">
                                 <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
