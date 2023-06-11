@@ -3,6 +3,7 @@ package com.vodafone.ecommerce.model;
 import com.vodafone.ecommerce.enums.Role;
 import com.vodafone.ecommerce.enums.Status;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,5 +32,6 @@ public class UserEntity {
     private List<Order> orders;
     @OneToOne(mappedBy = "user")
     private ShoppingCart cart;
-
+    @ColumnDefault(value = "0")
+    private Integer loginFailureCount;
 }
