@@ -26,5 +26,13 @@ public class GlobalExceptionHandler {
 
 
     }
+    @ExceptionHandler(InvalidCardException.class)
+    public ResponseEntity<ErrorMessage> InvalidException(InvalidCardException invalidCardException){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setCode(invalidCardException.getStatus().getReasonPhrase());
+        errorMessage.setMessage(invalidCardException.getMessage());
+        return new ResponseEntity<>(errorMessage,invalidCardException.getStatus());
 
+
+    }
 }
