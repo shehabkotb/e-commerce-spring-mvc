@@ -110,9 +110,30 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteProductFromCart(Long userId, Long productId) {
         CartItem cartItem = cartItemRepository.findByProductId(productId);
+        ShoppingCart cart = cartRepository.findByUserId(userId);
         Product product = productRepository.findById(productId).orElseThrow();
+        cart.setTotalPrice(cart.getTotalPrice() - (product.getPrice() * cartItem.getQuantity()));
         product.setStockQuantity(product.getStockQuantity() + cartItem.getQuantity());
         productRepository.save(product);
-        cartItemRepository.deleteByProductId(cartItem.getProduct().getId());
+        cartItemRepository.deleteById(cartItem.getId());
+        cartRepository.save(cart);
+    }
+
+    @Override
+    public boolean updateCartProduct(Long userId, Long productId, Long newQuantity) {
+        CartItem cartItem = cartItemRepository.findByProductId(productId);
+        ShoppingCart cart = cartRepository.findByUserId(userId);
+        Product product = productRepository.findById(productId).orElseThrow();
+        Long availableQuantity = product.getStockQuantity()+cartItem.getQuantity();
+        if (availableQuantity >= newQuantity) {
+            product.setStockQuantity(availableQuantity - newQuantity);
+            cartItem.setQuantity(newQuantity);
+            cart.setTotalPrice(cartItemSerivce.calculateTotalPrice(cart.getId()));
+            productRepository.save(product);
+            cartItemRepository.save(cartItem);
+            cartRepository.save(cart);
+            return true;
+        }
+        return false;
     }
 }
