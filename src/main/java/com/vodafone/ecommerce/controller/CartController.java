@@ -42,4 +42,14 @@ public class CartController {
         cartService.deleteProductFromCart(userId, productId);
         return "redirect:/user/{userId}/cart";
     }
+
+    @PostMapping("/user/{userId}/cart/{productId}/update")
+    public String updateCartProduct(@PathVariable("userId") Long userId,
+                                    @PathVariable("productId") Long productId,
+                                    @ModelAttribute("quantity") Long newQuantity) {
+        if (cartService.updateCartProduct(userId, productId, newQuantity)) {
+            return "redirect:/user/{userId}/cart?success=true";
+        }
+        return "redirect:/user/{userId}/cart?failed=true";
+    }
 }
