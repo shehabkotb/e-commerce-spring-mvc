@@ -24,30 +24,39 @@
             <div class="col-md-8 mb-4">
                 <!--Card-->
                 <div class="card p-4">
-                    <form th:action="@{/checkout/{userId}/pay(userId=${#authentication.getPrincipal().getId()})}" th:object="${paymentDto}">
+                    <form method="post" th:action="@{/checkout/{userId}/pay(userId=${#authentication.getPrincipal().getId()})}" th:object="${paymentDto}">
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3">
                                 <p class="mb-0">
                                     Credit card number </p>
                                 <div class="form-outline">
-                                    <input class="form-control" type="text"/>
+                                    <input class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" required="required" th:field="*{cardNumber}" type="text"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3 mb-3">
                                 <p class="mb-0">
-                                    Expiration </p>
+                                    Month </p>
                                 <div class="form-outline">
-                                    <input class="form-control" type="text"/>
+                                    <input class="form-control" id="month" name="Month" placeholder="XX"  required="required" th:field="*{month}" type="text"/>
+
+                                </div>
+                            </div>
+                        <div >
+                            <div class="col-md-3 mb-3">
+                                <p class="mb-0">
+                                    Year </p>
+                                <div class="form-outline">
+                                    <input class="form-control" id="year" name="Year" placeholder="XX"  required="required" th:field="*{year}" type="text"/>
 
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <p class="mb-0">
-                                    CVV </p>
+                                    CCV </p>
                                 <div class="form-outline">
-                                    <input class="form-control" type="text"/>
+                                    <input class="form-control" id="cvv" name="CCV" placeholder="CCV" required="required" th:field="*{cvv}" type="text"/>
 
                                 </div>
                             </div>
