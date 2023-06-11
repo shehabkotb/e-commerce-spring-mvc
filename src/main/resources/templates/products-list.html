@@ -17,7 +17,23 @@
     </div>
 </header>
 <!-- Section-->
-<section class="py-5">
+<section class="pt-3 pb-5">
+    <div class="container px-6 px-lg-5 mt-3 mb-2">
+        <div class="px-6">
+            <div class="d-flex justify-content-between">
+                <h2><strong>Products<strong></h2>
+                <div>
+                    <select aria-label="Default select example" class="form-select" id="category" name="category">
+                        <option th:each="category : ${T(com.vodafone.ecommerce.enums.Category).values()}" th:text="${category}" th:value="${category}"></option>
+                    </select>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-dark" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <div class="col mb-5" th:each="product :${products}">
