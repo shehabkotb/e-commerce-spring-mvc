@@ -1,8 +1,10 @@
 package com.vodafone.ecommerce.service.impl;
 
+import com.vodafone.ecommerce.dto.PaymentDto;
 import com.vodafone.ecommerce.exception.InsufficientBalanceException;
 import com.vodafone.ecommerce.exception.InvalidCardException;
 import com.vodafone.ecommerce.exception.NotFoundException;
+import com.vodafone.ecommerce.mapper.PaymentMapper;
 import com.vodafone.ecommerce.model.PaymentCard;
 import com.vodafone.ecommerce.service.PaymentCardService;
 import lombok.AllArgsConstructor;
@@ -27,12 +29,14 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    public String getCardDetails(PaymentCard paymentCard) {
+    public String payFromPaymentCard(PaymentDto paymentDto) {
+//        PaymentCard paymentCard= PaymentMapper.mapToPayment(paymentDto);
         String uri="http://localhost:8080/vending_machine/webapi/payments";
-        HttpEntity<PaymentCard> request=new HttpEntity<>(paymentCard);
-        PaymentCard paymentCard1 = null;
+        HttpEntity<PaymentDto> request=new HttpEntity<>(paymentDto);
+        PaymentDto paymentCard1 = null;
         try {
-            paymentCard1 = restTemplate.postForObject(uri,request, PaymentCard.class);
+             paymentCard1 = restTemplate.postForObject(uri, request, PaymentDto.class);
+            System.out.println(paymentCard1);
 
         }catch (HttpClientErrorException exception){
             System.out.println(exception.getRawStatusCode());
@@ -51,6 +55,6 @@ public class PaymentCardServiceImpl implements PaymentCardService {
 
 
         }
-        return "Payment Granted Successfully";
+        return "Pay Successfully";
     }
 }
