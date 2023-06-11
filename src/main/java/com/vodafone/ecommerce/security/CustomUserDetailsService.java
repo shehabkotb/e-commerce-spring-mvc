@@ -26,6 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity user = userRepository.findByUsername(username);
         if (user != null) {
 
+
             UserDetails authUser = CustomUserDetails.CustomUserDetailsBuilder()
                     .id(user.getId())
                     .username(user.getUsername())
