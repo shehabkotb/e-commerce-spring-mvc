@@ -16,10 +16,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private CustomUserDetailsService userDetailsService;
+    private CustomAuthenticationFailureHandler loginFailureHandler;
+    private CustomAuthenticationSuccessHandler loginSuccessHandler;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService, CustomAuthenticationFailureHandler loginFailureHandler, CustomAuthenticationSuccessHandler loginSuccessHandler) {
         this.userDetailsService = userDetailsService;
+        this.loginFailureHandler = loginFailureHandler;
+        this.loginSuccessHandler = loginSuccessHandler;
     }
 
     @Bean
@@ -31,15 +35,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests(
-                        (requests) -> requests.antMatchers("/login", "/register", "/confirm-account/**", "/css/**", "/js/**").permitAll()
+                        (requests) -> requests.antMatchers("/login", "/register", "/reset", "/confirm-account/**", "/css/**", "/js/**").permitAll()
                                 .antMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        .successHandler(loginSuccessHandler)
                         .loginProcessingUrl("/login")
-                        .failureUrl("/login?error=true")
+                        .failureHandler(loginFailureHandler)
                         .permitAll()
                 ).logout(
                         logout -> logout

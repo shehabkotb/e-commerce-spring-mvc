@@ -1,16 +1,18 @@
 package com.vodafone.ecommerce.controller;
 
-import com.vodafone.ecommerce.model.UserEntity;
+import com.vodafone.ecommerce.dto.RegistrationDto;
 import com.vodafone.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 
 @Controller
 @AllArgsConstructor
@@ -25,13 +27,32 @@ public class AuthController {
 
     @GetMapping("/register")
     public String getRegisterForm(Model model) {
+        RegistrationDto registrationDto = new RegistrationDto();
+        model.addAttribute("user", registrationDto);
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody UserEntity user) throws MessagingException {
-        userService.saveUser(user);
-        return "redirect:/login";
+    public String registerUser(@Valid @ModelAttribute("user") RegistrationDto registrationDto, BindingResult bindingResult, Model model) throws MessagingException {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", registrationDto);
+            return "register";
+        }
+
+        userService.saveUser(registrationDto);
+        return "redirect:/login?success&message=Registered successfully";
+    }
+
+    @GetMapping("/reset")
+    public String getResetForm() {
+        return "reset-account";
+    }
+
+    @PostMapping("/reset")
+    public String resetUser(@ModelAttribute("email") String email, Model model) throws MessagingException {
+        userService.resetAccount(email);
+        return "redirect:/reset?success";
     }
 
     @GetMapping("/confirm-account/{token}")
