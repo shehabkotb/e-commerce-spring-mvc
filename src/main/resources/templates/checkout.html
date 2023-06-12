@@ -7,10 +7,26 @@
     html, body {padding:0; margin:0; height:100%;}
     footer{position: absolute; bottom: 0; left: 0; right: 0;}
 
+
+
+
+
+
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
 <th:block th:replace="fragments/general.html :: customer-nav"/>
+<div class="alert alert-danger alert-dismissible fade show text-center" role="alert" th:if="${param.failed}">
+    Quantity Out of Stock
+    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
 
 <!--Main layout-->
 <main class="mt-3 pt-4">
@@ -24,36 +40,48 @@
             <div class="col-md-8 mb-4">
                 <!--Card-->
                 <div class="card p-4">
-                    <form th:action="@{/checkout/{userId}/pay(userId=${#authentication.getPrincipal().getId()})}" th:object="${paymentDto}">
+                    <form method="post" th:action="@{/checkout/{userId}/pay(userId=${#authentication.getPrincipal().getId()})}" th:object="${paymentDto}">
                         <div class="row mb-3">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <p class="mb-0">
                                     Credit card number </p>
                                 <div class="form-outline">
-                                    <input class="form-control" type="text"/>
+                                    <input class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" required="required" th:field="*{cardNumber}"
+                                           type="text"/>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <p class="mb-0">
+                                    CCV </p>
+                                <div class="form-outline">
+                                    <input class="form-control" id="cvv" maxlength="3" name="CCV" placeholder="CCV" required="required" th:field="*{cvv}" type="text"/>
+
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <p class="mb-0">
-                                    Expiration </p>
+                                    Month </p>
                                 <div class="form-outline">
-                                    <input class="form-control" type="text"/>
+                                    <input class="form-control" id="month" maxlength="2" name="Month" placeholder="XX" required="required" th:field="*{month}" type="text"/>
 
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-3">
+
+                            <div class="col-md-2 mb-3">
                                 <p class="mb-0">
-                                    CVV </p>
+                                    Year </p>
                                 <div class="form-outline">
-                                    <input class="form-control" type="text"/>
+                                    <input class="form-control" id="year" maxlength="2" name="Year" placeholder="XX" required="required" th:field="*{year}" type="text"/>
 
                                 </div>
                             </div>
                         </div>
                         <hr class="mb-4"/>
+
                         <button class="btn btn-primary" type="submit">checkout</button>
+
                     </form>
                 </div>
                 <!--/.Card-->
@@ -74,7 +102,12 @@
                             <h6 class="my-0 mb-1"><strong th:text="${cartItem.productDto.name}">Product name</strong></h6>
                             <small class="text-muted" th:text="${cartItem.productDto.category.name()}">Category</small>
                         </div>
-                        <span class="text-muted" th:text="${cartItem.productDto.price}">Item Price</span>
+                        <div>
+                            <span class="text-muted" th:text="${cartItem.quantity}"></span>
+                            x
+                            <span class="text-muted" th:text="${cartItem.productDto.price}">Item Price</span>
+                        </div>
+
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total</span>

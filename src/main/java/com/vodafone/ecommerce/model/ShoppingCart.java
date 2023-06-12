@@ -13,12 +13,12 @@ import java.util.List;
 @Entity
 @Table(name = "cart")
 public class ShoppingCart {
+    @OneToMany(mappedBy = "shoppingCart")
+    List<CartItem> cartItems;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double totalPrice;
     @OneToOne
     private UserEntity user;
-    @OneToMany(mappedBy = "shoppingCart")
-    List<CartItem> cartItems;
 }

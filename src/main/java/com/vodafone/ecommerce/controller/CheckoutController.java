@@ -3,6 +3,8 @@ package com.vodafone.ecommerce.controller;
 import com.vodafone.ecommerce.dto.CartItemDto;
 import com.vodafone.ecommerce.dto.PaymentDto;
 import com.vodafone.ecommerce.service.CartService;
+import com.vodafone.ecommerce.service.OrderService;
+import com.vodafone.ecommerce.service.PaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +18,15 @@ import java.util.List;
 
 @Controller
 public class CheckoutController {
-    CartService cartService;
+    private final CartService cartService;
+    private final PaymentCardService paymentCardService;
+    private OrderService orderService;
 
     @Autowired
-    public CheckoutController(CartService cartService) {
+    public CheckoutController(CartService cartService, PaymentCardService paymentCardService, OrderService orderService) {
         this.cartService = cartService;
+        this.paymentCardService = paymentCardService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/checkout/{userId}")
@@ -33,6 +39,7 @@ public class CheckoutController {
             return "redirect:/products";
         }
 
+
         model.addAttribute("payment", paymentDto);
         model.addAttribute("cartItems", cartItemDtoList);
         model.addAttribute("totalPrice", totalPrice);
@@ -40,9 +47,19 @@ public class CheckoutController {
     }
 
     @PostMapping("/checkout/{userId}/pay")
-    public String payCart(@ModelAttribute("paymentDto") PaymentDto paymentDto, @PathVariable("userId") String userId, BindingResult bindingResult, Model model) {
+    public String payCart(@ModelAttribute("paymentDto") PaymentDto paymentDto, @PathVariable("userId") Long userId, BindingResult bindingResult, Model model) {
         // call payment service here
-        // call order service to empty cart and create order
-        return "redirect:/orders";
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("PaymentCard", paymentDto);
+            return "/checkout";
+        }
+        double totalPrice = cartService.getCartTotalPrice(userId);
+        paymentDto.setAmount(totalPrice);
+
+        paymentCardService.payFromPaymentCard(paymentDto);
+        orderService.createOrderAndEmptyCart(userId);
+
+        return "redirect:/user/" + userId + "/orders?success";
     }
 }

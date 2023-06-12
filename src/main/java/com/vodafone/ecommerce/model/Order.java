@@ -15,14 +15,14 @@ import java.util.List;
 @Entity
 @Table(name = "order")
 public class Order {
+    @CreationTimestamp
+    LocalDateTime createdAt;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    List<OrderItem> orderItems;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @CreationTimestamp
-    LocalDateTime createdAt;
     private Double totalPrice;
     @ManyToOne
     private UserEntity user;
-    @OneToMany(mappedBy = "order")
-    List<OrderItem> orderItems;
 }
