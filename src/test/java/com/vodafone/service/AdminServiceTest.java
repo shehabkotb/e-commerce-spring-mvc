@@ -2,26 +2,19 @@ package com.vodafone.service;
 
 import com.vodafone.ecommerce.dto.UserDto;
 import com.vodafone.ecommerce.enums.Role;
-import com.vodafone.ecommerce.mapper.UserEntityMapper;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.UserRepository;
 import com.vodafone.ecommerce.service.AdminService;
 import com.vodafone.ecommerce.service.impl.AdminServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -38,43 +31,6 @@ class AdminServiceTest {
     }
 
 
-//    @Test
-//    void getAuthorsTest_getAuthor_returnAllAuthor() {
-//        // Arrange
-//        UserEntity user1 = UserEntity.builder()
-//                .id(1L)
-//                .email("hema@example.com")
-//                .role(Role.ADMIN)
-//                .username("hema")
-//                .build();
-////
-////        UserDto userDto=UserDto.builder()
-////                .id(11L)
-////                .email("hema@example.com")
-////                .role(Role.ADMIN)
-////                .username("hema")
-////                .password("password")
-////                .username("hema").build();
-//
-//        when(userRepository.save(user1)).thenReturn(user1);
-//
-////        doReturn(user).when(userRepository).save(any(UserEntity.class));
-////
-////        when(userRepository.save(any(UserEntity.class))).thenReturn(user);
-//
-//        UserDto userDto2 = UserEntityMapper.mapToUserDto(user1);
-//
-//        // Act
-//        UserDto result = adminService.saveAdmin(userDto2);
-//
-//        // Assert
-//        assertEquals(userDto2.getPassword(),result.getPassword());
-//        assertEquals(userDto2.getUsername(), result.getUsername());
-//        assertEquals(userDto2.getEmail(), result.getEmail());
-//        assertEquals(Role.ADMIN, result.getRole());
-//
-//
-//    }
 
     @Test
      void getAllAdminTest_addAdmin_returnListOfAdmin() {
@@ -109,7 +65,7 @@ class AdminServiceTest {
     }
 
     @Test
-    void findAdminById_findAdminById_returnAdminWithId(){
+    void findAdminByIdTest_findAdminById_returnAdminWithId(){
         //Arrange
         UserEntity user1 = UserEntity.builder()
                 .id(1L)
@@ -130,7 +86,7 @@ class AdminServiceTest {
 
     }
     @Test
-    void deleteAdmin_deleteAdmin_returnNoting(){
+    void deleteAdminTest_deleteAdmin_returnNoting(){
         //Arrange
         UserEntity user1 = UserEntity.builder()
                 .id(1L)
