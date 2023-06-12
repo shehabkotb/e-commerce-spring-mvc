@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "17c434a7-a818-4642-b199-b0115dfee23e",
+		"name": "Rest card Validation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8256220"
+	},
+	"item": [
+		{
+			"name": "get all cards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/vending_machine/webapi/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"vending_machine",
+						"webapi",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pay with card",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"month\": \"06\",\r\n        \"year\": \"24\",\r\n        \"amount\": 10,\r\n        \"cardNumber\": \"3456123456234567\",\r\n        \"cvv\": 346\r\n       \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/vending_machine/webapi/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"vending_machine",
+						"webapi",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
