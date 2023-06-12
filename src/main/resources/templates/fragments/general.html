@@ -41,6 +41,9 @@
         <div class="collapse navbar-collapse" id="#customer-navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a aria-current="page" class="nav-link active" th:href="@{/}">Browse</a></li>
+                <li class="nav-item"><a aria-current="page" class="nav-link active" th:href="@{/user/{userId}/orders(userId=${#authentication.getPrincipal().getId()})}">Order
+                                                                                                                                                                         History</a>
+                </li>
             </ul>
             <div class="d-flex gap-2">
                 <span class="p-2 text-secondary" th:text="'Hello, ' + ${#authentication.getPrincipal().getUsername()}">Hello, UserName</span>

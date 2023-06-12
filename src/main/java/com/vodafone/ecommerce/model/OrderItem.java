@@ -1,17 +1,14 @@
 package com.vodafone.ecommerce.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "order_item")
 public class OrderItem {
@@ -22,6 +19,5 @@ public class OrderItem {
     private Order order;
     @ManyToOne
     private Product product;
-    private long quantity;
-
+    private Long quantity;
 }

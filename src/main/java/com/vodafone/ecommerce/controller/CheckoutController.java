@@ -3,6 +3,7 @@ package com.vodafone.ecommerce.controller;
 import com.vodafone.ecommerce.dto.CartItemDto;
 import com.vodafone.ecommerce.dto.PaymentDto;
 import com.vodafone.ecommerce.service.CartService;
+import com.vodafone.ecommerce.service.OrderService;
 import com.vodafone.ecommerce.service.PaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,11 +20,13 @@ import java.util.List;
 public class CheckoutController {
     private final CartService cartService;
     private final PaymentCardService paymentCardService;
+    private OrderService orderService;
 
     @Autowired
-    public CheckoutController(CartService cartService,PaymentCardService paymentCardService) {
+    public CheckoutController(CartService cartService, PaymentCardService paymentCardService, OrderService orderService) {
         this.cartService = cartService;
-        this.paymentCardService=paymentCardService;
+        this.paymentCardService = paymentCardService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/checkout/{userId}")
@@ -47,15 +50,16 @@ public class CheckoutController {
     public String payCart(@ModelAttribute("paymentDto") PaymentDto paymentDto, @PathVariable("userId") Long userId, BindingResult bindingResult, Model model) {
         // call payment service here
 
-        if (bindingResult.hasErrors()){
-            model.addAttribute("PaymentCard",paymentDto);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("PaymentCard", paymentDto);
             return "/checkout";
         }
         double totalPrice = cartService.getCartTotalPrice(userId);
         paymentDto.setAmount(totalPrice);
 
         paymentCardService.payFromPaymentCard(paymentDto);
-        // call order service to empty cart and create order
-        return "redirect:/products";
+        orderService.createOrderAndEmptyCart(userId);
+
+        return "redirect:/user/" + userId + "/orders?success";
     }
 }
