@@ -32,7 +32,7 @@ import static org.mockito.BDDMockito.when;
 
 @SpringBootTest(classes = PaymentCardService.class)
 
- class PaymentCardServiceTest {
+public class PaymentCardServiceTest {
     @Mock
     private RestTemplate restTemplate;
 
