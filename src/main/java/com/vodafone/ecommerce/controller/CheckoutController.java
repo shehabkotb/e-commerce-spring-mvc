@@ -2,10 +2,13 @@ package com.vodafone.ecommerce.controller;
 
 import com.vodafone.ecommerce.dto.CartItemDto;
 import com.vodafone.ecommerce.dto.PaymentDto;
+import com.vodafone.ecommerce.security.CustomUserDetails;
 import com.vodafone.ecommerce.service.CartService;
 import com.vodafone.ecommerce.service.OrderService;
 import com.vodafone.ecommerce.service.PaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,8 +32,12 @@ public class CheckoutController {
         this.orderService = orderService;
     }
 
+    @PreAuthorize("#authUser.id == #userId")
     @GetMapping("/checkout/{userId}")
-    public String getCheckoutForm(@ModelAttribute("paymentDto") PaymentDto paymentDto, @PathVariable("userId") Long userId, Model model) {
+    public String getCheckoutForm(@ModelAttribute("paymentDto") PaymentDto paymentDto,
+                                  @PathVariable("userId") Long userId,
+                                  Model model,
+                                  @AuthenticationPrincipal CustomUserDetails authUser) {
         List<CartItemDto> cartItemDtoList = cartService.getUserCart(userId);
         double totalPrice = cartService.getCartTotalPrice(userId);
 
@@ -46,8 +53,13 @@ public class CheckoutController {
         return "checkout";
     }
 
+    @PreAuthorize("#authUser.id == #userId")
     @PostMapping("/checkout/{userId}/pay")
-    public String payCart(@ModelAttribute("paymentDto") PaymentDto paymentDto, @PathVariable("userId") Long userId, BindingResult bindingResult, Model model) {
+    public String payCart(@ModelAttribute("paymentDto") PaymentDto paymentDto,
+                          @PathVariable("userId") Long userId,
+                          BindingResult bindingResult,
+                          Model model,
+                          @AuthenticationPrincipal CustomUserDetails authUser) {
         // call payment service here
 
         if (bindingResult.hasErrors()) {
