@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto saveUser(RegistrationDto registrationDto) throws MessagingException {
+    public UserDto registerUser(RegistrationDto registrationDto) throws MessagingException {
 
         if (userRepository.existsByEmail(registrationDto.getEmail())) {
             throw new DataIntegrityViolationException("Email Already Exists");

@@ -7,7 +7,7 @@ import javax.mail.MessagingException;
 
 public interface UserService {
 
-    UserDto saveUser(RegistrationDto registrationDto) throws MessagingException;
+    UserDto registerUser(RegistrationDto registrationDto) throws MessagingException;
 
     void resetAccount(String email) throws MessagingException;
 
