@@ -1,8 +1,6 @@
 package com.vodafone.ecommerce.exception;
 
-import com.vodafone.ecommerce.model.ErrorMessage;
 import com.vodafone.ecommerce.security.CustomUserDetails;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -24,11 +22,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorMessage> NotFoundException(NotFoundException notFoundException) {
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setCode(notFoundException.getStatus().getReasonPhrase());
-        errorMessage.setMessage(notFoundException.getMessage());
-        return new ResponseEntity<>(errorMessage, notFoundException.getStatus());
+    public ModelAndView NotFoundException(NotFoundException notFoundException){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("message", notFoundException.getMessage());
+        mav.addObject("timestamp", new Date().toString());
+        mav.addObject("status", 404);
+        mav.setViewName("notFound-exception");
+        return mav;
     }
 
     @ExceptionHandler(InvalidCardException.class)
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {AccessDeniedException.class})
     protected ModelAndView handleAccessDeniedException(AccessDeniedException exception, WebRequest request) {
-        String message = "You do not have permission to perform this action.";
+//        String message = "You do not have permission to perform this action.";
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", exception);
         mav.addObject("timestamp", new Date().toString());
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {HttpRequestMethodNotSupportedException.class})
     protected ModelAndView handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception, WebRequest request) {
-        String message = "you Enter a wrong URL.";
+//        String message = "you Enter a wrong URL.";
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", exception);
         mav.addObject("timestamp", new Date().toString());
