@@ -1,6 +1,7 @@
 package com.vodafone.ecommerce.service.impl;
 
 import com.vodafone.ecommerce.dto.CartItemDto;
+import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.mapper.CartItemMapper;
 import com.vodafone.ecommerce.model.CartItem;
 import com.vodafone.ecommerce.model.Product;
@@ -40,9 +41,11 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean addProductToCart(Long productId, Long quantity, Long userId) {
-        Product product = productRepository.findById(productId).orElseThrow();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("This Product doesn't exist."));
         if (product.getStockQuantity() >= quantity) {
-            UserEntity user = userRepository.findById(userId).orElseThrow();
+            UserEntity user = userRepository.findById(userId)
+                    .orElseThrow(() -> new NotFoundException("This User doesn't exist."));
             if (isUserCartExist(userId)) {
                 ShoppingCart cart = cartRepository.findByUserId(user.getId());
                 double newTotalPrice = cart.getTotalPrice() + (product.getPrice() * quantity);
@@ -88,6 +91,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemDto> getUserCart(Long userId) {
+        if(userRepository.findById(userId).isEmpty()) {
+            throw new NotFoundException("This User doesn't exist.");
+        }
         if (!isUserCartExist(userId)) {
             return new ArrayList<>();
         }
@@ -98,6 +104,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public double getCartTotalPrice(Long userId) {
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new NotFoundException("This User doesn't exist.");
+        }
         if (!isUserCartExist(userId)) {
             return 0;
         }
