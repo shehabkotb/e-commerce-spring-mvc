@@ -20,7 +20,6 @@ public class OrderController {
     OrderService orderService;
 
     @PreAuthorize("#authUser.id == #userId")
-
     @GetMapping("/user/{userId}/orders")
     public String getAllOrders(@PathVariable("userId") Long userId, Model model, @AuthenticationPrincipal CustomUserDetails authUser) {
         List<OrderDto> orderDtoList = orderService.getAllOrdersByUserId(userId);
