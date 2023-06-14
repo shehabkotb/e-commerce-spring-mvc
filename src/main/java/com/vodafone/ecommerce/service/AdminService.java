@@ -11,7 +11,7 @@ public interface AdminService {
 
     UserDto findAdminById(Long adminId);
 
-    UserDto updateAdmin(UserDto userDto);
+    UserDto updateAdmin(UserDto userDto, Long adminId);
 
-    void delete(Long adminId);
+    void deleteAdmin(Long adminId);
 }
