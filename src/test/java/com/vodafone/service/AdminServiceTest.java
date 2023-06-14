@@ -96,7 +96,7 @@ class AdminServiceTest {
                 .build();
         //Act
         doNothing().when(userRepository).deleteById(user1.getId());
-        adminService.delete(user1.getId());
+        adminService.deleteAdmin(user1.getId());
 
         //Assert
         verify(userRepository, times(1)).deleteById(user1.getId());
