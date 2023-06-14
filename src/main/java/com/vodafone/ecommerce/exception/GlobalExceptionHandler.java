@@ -1,47 +1,45 @@
 package com.vodafone.ecommerce.exception;
 
 import com.vodafone.ecommerce.model.ErrorMessage;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import com.vodafone.ecommerce.security.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(InsufficientBalanceException.class)
-    public ResponseEntity<ErrorMessage> InsufficientBalanceException(InsufficientBalanceException insufficientBalanceException){
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setCode(insufficientBalanceException.getStatus().getReasonPhrase());
-        errorMessage.setMessage(insufficientBalanceException.getMessage());
-        return new ResponseEntity<>(errorMessage,insufficientBalanceException.getStatus());
-        }
+    public ModelAndView InsufficientBalanceException(InsufficientBalanceException insufficientBalanceException) {
+        ModelAndView mav = new ModelAndView();
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        mav.setViewName("redirect:/checkout/" + customUserDetails.getId() + "?failed&message=Insufficient+Balance");
+        return mav;
+    }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorMessage> NotFoundException(NotFoundException notFoundException){
+    public ResponseEntity<ErrorMessage> NotFoundException(NotFoundException notFoundException) {
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setCode(notFoundException.getStatus().getReasonPhrase());
         errorMessage.setMessage(notFoundException.getMessage());
-        return new ResponseEntity<>(errorMessage,notFoundException.getStatus());
-    }
-    @ExceptionHandler(InvalidCardException.class)
-    public ResponseEntity<ErrorMessage> InvalidException(InvalidCardException invalidCardException){
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setCode(invalidCardException.getStatus().getReasonPhrase());
-        errorMessage.setMessage(invalidCardException.getMessage());
-        return new ResponseEntity<>(errorMessage,invalidCardException.getStatus());
+        return new ResponseEntity<>(errorMessage, notFoundException.getStatus());
     }
 
-    @ExceptionHandler(value = { AccessDeniedException.class })
+    @ExceptionHandler(InvalidCardException.class)
+    public ModelAndView InvalidException(InvalidCardException invalidCardException, WebRequest webRequest) {
+        ModelAndView mav = new ModelAndView();
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        mav.setViewName("redirect:/checkout/" + customUserDetails.getId() + "?failed&message=Invalid+Card+Details");
+        return mav;
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
     protected ModelAndView handleAccessDeniedException(AccessDeniedException exception, WebRequest request) {
         String message = "You do not have permission to perform this action.";
         ModelAndView mav = new ModelAndView();
@@ -52,7 +50,7 @@ public class GlobalExceptionHandler {
         return mav;
     }
 
-    @ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class })
+    @ExceptionHandler(value = {HttpRequestMethodNotSupportedException.class})
     protected ModelAndView handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception, WebRequest request) {
         String message = "you Enter a wrong URL.";
         ModelAndView mav = new ModelAndView();

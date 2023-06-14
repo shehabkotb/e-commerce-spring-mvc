@@ -9,22 +9,16 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
     </style>
 </head>
 <body>
 <th:block th:replace="fragments/general.html :: customer-nav"/>
+<!--<div class="alert alert-danger alert-dismissible fade show text-center" role="alert" th:if="${param.failed}">-->
+<!--    Quantity Out of Stock-->
+<!--    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>-->
+<!--</div>-->
 <div class="alert alert-danger alert-dismissible fade show text-center" role="alert" th:if="${param.failed}">
-    Quantity Out of Stock
+    <span th:text="${param.message}">Error Message</span>
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>
 
@@ -46,7 +40,7 @@
                                 <p class="mb-0">
                                     Credit card number </p>
                                 <div class="form-outline">
-                                    <input class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" required="required" th:field="*{cardNumber}"
+                                    <input class="form-control" id="cardNumber" maxlength="16" name="cardNumber" placeholder="Card Number" required="required" th:field="*{cardNumber}"
                                            type="text"/>
                                 </div>
                             </div>
