@@ -18,7 +18,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
 
     @Override
     public String payFromPaymentCard(PaymentDto paymentDto) {
-        String uri = "http://localhost:8080/vending_machine/webapi/payments";
+        String uri = "http://localhost:8082/vending_machine/webapi/payments";
         HttpEntity<PaymentDto> request = new HttpEntity<>(paymentDto);
         PaymentDto paymentCard1 = null;
         try {

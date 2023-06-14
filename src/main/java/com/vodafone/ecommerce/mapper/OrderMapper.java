@@ -9,7 +9,7 @@ public class OrderMapper {
 
     public static OrderDto mapToOrderDto(Order order, Integer totalQuantity) {
         return OrderDto.builder()
-                .createdAt(order.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-mm-dd")))
+                .createdAt(order.getCreatedAt().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")))
                 .id(order.getId())
                 .totalPrice(order.getTotalPrice())
                 .totalQuantity(totalQuantity)
