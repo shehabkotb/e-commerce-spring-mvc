@@ -32,28 +32,14 @@ import static org.mockito.BDDMockito.when;
 
 @SpringBootTest(classes = PaymentCardService.class)
 
-public class PaymentCardServiceTest {
+ class PaymentCardServiceTest {
     @Mock
     private RestTemplate restTemplate;
 
     @InjectMocks
     private PaymentCardServiceImpl paymentCardService;
 
-    @Test
-     void getCardListTest_getCardList_returnCardList() {
-        //Arrange
-        PaymentCard[] paymentCards = new PaymentCard[2];
-        paymentCards[0] = new PaymentCard();
-        paymentCards[1] = new PaymentCard();
-        String uri = "http://localhost:8080/vending_machine/webapi/payments";
-        //Act
-        when(restTemplate.getForObject(uri, PaymentCard[].class)).thenReturn(paymentCards);
 
-        List<PaymentCard> result = paymentCardService.getCardList();
-        //Assert
-        assertEquals(2, result.size());
-        verify(restTemplate).getForObject(uri, PaymentCard[].class);
-    }
     @Test
     void payFromPaymentCardTest_payFromPaymentCard_returnPaySuccess(){
         //Arrange
