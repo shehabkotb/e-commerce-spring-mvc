@@ -102,16 +102,13 @@ public class AdminController {
             model.addAttribute("UserEntity", admin);
             return "admin-editAdmin";
         }
-        admin.setId(adminId);
-        String encryptedPassword = passwordEncoder.encode(admin.getPassword());
-        admin.setPassword(encryptedPassword);
-        adminService.updateAdmin(admin);
+        adminService.updateAdmin(admin, adminId);
         return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/{adminId}/delete")
-    public String deleteClub(@PathVariable("adminId") Long adminId) {
-        adminService.delete(adminId);
+    public String deleteAdmin(@PathVariable("adminId") Long adminId) {
+        adminService.deleteAdmin(adminId);
         return "redirect:/admin/users";
     }
 
