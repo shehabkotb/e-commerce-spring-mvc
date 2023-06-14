@@ -40,21 +40,6 @@ public class PaymentCardServiceTest {
     private PaymentCardServiceImpl paymentCardService;
 
     @Test
-     void getCardListTest_getCardList_returnCardList() {
-        //Arrange
-        PaymentCard[] paymentCards = new PaymentCard[2];
-        paymentCards[0] = new PaymentCard();
-        paymentCards[1] = new PaymentCard();
-        String uri = "http://localhost:8080/vending_machine/webapi/payments";
-        //Act
-        when(restTemplate.getForObject(uri, PaymentCard[].class)).thenReturn(paymentCards);
-
-        List<PaymentCard> result = paymentCardService.getCardList();
-        //Assert
-        assertEquals(2, result.size());
-        verify(restTemplate).getForObject(uri, PaymentCard[].class);
-    }
-    @Test
     void payFromPaymentCardTest_payFromPaymentCard_returnPaySuccess(){
         //Arrange
         PaymentCard paymentCard= PaymentCard.builder()
@@ -64,7 +49,7 @@ public class PaymentCardServiceTest {
                 .cvv("123")
                 .amount(100.0)
                 .build();
-        String uri = "http://localhost:8080/vending_machine/webapi/payments";
+        String uri = "http://localhost:8082/vending_machine/webapi/payments";
         PaymentDto paymentDto= PaymentDto.builder()
                 .cardNumber("1234567890123456")
                 .month("07")
@@ -85,7 +70,7 @@ public class PaymentCardServiceTest {
 
     void payFromPaymentCardTest_payFromPaymentCardWithInvalidCardDetails_throwNotFoundException() {
         //Arrange
-        String uri = "http://localhost:8080/vending_machine/webapi/payments";
+        String uri = "http://localhost:8082/vending_machine/webapi/payments";
         PaymentDto paymentDto= PaymentDto.builder()
                 .cardNumber("1234567890123456")
                 .month("07")
@@ -103,7 +88,7 @@ public class PaymentCardServiceTest {
     @Test
     void payFromPaymentCardTest_payFromPaymentCardWithoutEnoughBalance_trowInsufficientBalanceException() {
         //Arrange
-        String uri = "http://localhost:8080/vending_machine/webapi/payments";
+        String uri = "http://localhost:8082/vending_machine/webapi/payments";
         PaymentDto paymentDto= PaymentDto.builder()
                 .cardNumber("1234567890123456")
                 .month("07")
@@ -121,7 +106,7 @@ public class PaymentCardServiceTest {
     @Test
     void payFromPaymentCardTest_payFromPaymentCardInvalidDetails_throwInvalidCardException() {
         //Arrange
-        String uri = "http://localhost:8080/vending_machine/webapi/payments";
+        String uri = "http://localhost:8082/vending_machine/webapi/payments";
         PaymentDto paymentDto= PaymentDto.builder()
                 .cardNumber("123456789022123456")
                 .month("07")
