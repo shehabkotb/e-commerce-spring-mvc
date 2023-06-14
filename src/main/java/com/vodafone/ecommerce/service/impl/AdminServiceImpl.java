@@ -71,9 +71,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteAdmin(Long adminId) {
-        if(userRepository.findById(adminId).isPresent()) {
-            userRepository.deleteById(adminId);
-        }
-        throw new NotFoundException("This Admin doesn't exist.");
+        userRepository.findById(adminId)
+                .orElseThrow(() -> new NotFoundException("This Admin doesn't exist."));
+        userRepository.deleteById(adminId);
     }
 }
