@@ -1,6 +1,7 @@
 package com.vodafone.ecommerce.service.impl;
 
 import com.vodafone.ecommerce.dto.ProductDto;
+import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.mapper.ProductMapper;
 import com.vodafone.ecommerce.model.Product;
 import com.vodafone.ecommerce.repository.ProductRepository;
@@ -37,10 +38,10 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductMapper::mapToProductDto).collect(Collectors.toList());
     }
 
-    //TODO: throw exception
     @Override
     public ProductDto findProductById(Long productId) {
-        return mapToProductDto(productRepository.findById(productId).orElseThrow());
+        return mapToProductDto(productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("This Product doesn't exist.")));
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         if (productRepository.findById(productId).isPresent()) {
             productRepository.deleteById(productId);
         }
-        //TODO: throw not found exception
+        throw new NotFoundException("This Product doesn't exist.");
     }
 
     @Override
