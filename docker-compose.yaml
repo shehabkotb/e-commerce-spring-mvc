@@ -1,6 +1,26 @@
+version: "3"
 services:
   maildev:
     image: maildev/maildev
     ports:
       - "1080:1080"
       - "1025:1025"
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: payment
+    #      ports:
+    #        - "3307:3306"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+
+  payment:
+    image: tomcat
+    volumes:
+      - ./vending_machine.war:/usr/local/tomcat/webapps/vending_machine.war
+    ports:
+      - '8082:8080'
+    links:
+      - db
+
