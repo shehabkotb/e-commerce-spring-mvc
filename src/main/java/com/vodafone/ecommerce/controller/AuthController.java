@@ -40,7 +40,7 @@ public class AuthController {
             return "register";
         }
 
-        userService.saveUser(registrationDto);
+        userService.registerUser(registrationDto);
         return "redirect:/login?success";
     }
 
