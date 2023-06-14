@@ -21,12 +21,8 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    UserRepository userRepository;
-
     @Autowired
-    public AdminServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserRepository userRepository;
 
     @Override
     public UserDto saveAdmin(UserDto userDto) {
