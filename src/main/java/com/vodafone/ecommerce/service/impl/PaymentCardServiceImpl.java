@@ -18,14 +18,14 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${payment.service.url}")
-    private String paymentServiceUrl;
+    private String paymentServiceUrl="http://localhost:8082/vending_machine/webapi/payments";
 
     @Override
     public String payFromPaymentCard(PaymentDto paymentDto) {
         HttpEntity<PaymentDto> request = new HttpEntity<>(paymentDto);
         PaymentDto paymentCard1 = null;
         try {
+            System.out.println(paymentServiceUrl);
             paymentCard1 = restTemplate.postForObject(paymentServiceUrl, request, PaymentDto.class);
             System.out.println(paymentCard1);
 
