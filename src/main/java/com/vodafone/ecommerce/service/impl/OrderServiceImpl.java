@@ -10,7 +10,9 @@ import com.vodafone.ecommerce.repository.CartItemRepository;
 import com.vodafone.ecommerce.repository.CartRepository;
 import com.vodafone.ecommerce.repository.OrderRepository;
 import com.vodafone.ecommerce.repository.UserRepository;
+import com.vodafone.ecommerce.service.CartService;
 import com.vodafone.ecommerce.service.OrderService;
+import com.vodafone.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository orderRepository;
     @Autowired
-    private CartRepository cartRepository;
+    private CartService cartService;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @Autowired
     private CartItemRepository cartItemRepository;
 
@@ -47,8 +49,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void createOrderAndEmptyCart(Long userId) {
-        ShoppingCart shoppingCart = cartRepository.findByUserId(userId);
-        UserEntity user = userRepository.findById(userId).orElseThrow();
+        ShoppingCart shoppingCart = cartService.findByUserId(userId);
+        UserEntity user = userService.getUserById(userId);
 
         Order newOrder = new Order();
 
@@ -68,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         shoppingCart.setTotalPrice(0D);
 
         orderRepository.save(newOrder);
-        cartRepository.save(shoppingCart);
+        cartService.saveCart(shoppingCart);
         cartItemRepository.deleteAll(shoppingCart.getCartItems());
     }
 }
