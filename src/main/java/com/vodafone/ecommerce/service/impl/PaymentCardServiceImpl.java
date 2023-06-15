@@ -6,15 +6,16 @@ import com.vodafone.ecommerce.exception.InvalidCardException;
 import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.service.PaymentCardService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@AllArgsConstructor
 public class PaymentCardServiceImpl implements PaymentCardService {
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public String payFromPaymentCard(PaymentDto paymentDto) {

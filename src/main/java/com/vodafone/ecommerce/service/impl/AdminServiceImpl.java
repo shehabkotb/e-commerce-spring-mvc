@@ -21,12 +21,8 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    UserRepository userRepository;
-
     @Autowired
-    public AdminServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserRepository userRepository;
 
     @Override
     public UserDto saveAdmin(UserDto userDto) {
@@ -75,9 +71,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteAdmin(Long adminId) {
-        if(userRepository.findById(adminId).isPresent()) {
-            userRepository.deleteById(adminId);
-        }
-        throw new NotFoundException("This Admin doesn't exist.");
+        userRepository.findById(adminId)
+                .orElseThrow(() -> new NotFoundException("This Admin doesn't exist."));
+        userRepository.deleteById(adminId);
     }
 }

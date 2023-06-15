@@ -21,16 +21,13 @@ import java.util.List;
 
 @Controller
 public class CheckoutController {
-    private final CartService cartService;
-    private final PaymentCardService paymentCardService;
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private PaymentCardService paymentCardService;
+    @Autowired
     private OrderService orderService;
 
-    @Autowired
-    public CheckoutController(CartService cartService, PaymentCardService paymentCardService, OrderService orderService) {
-        this.cartService = cartService;
-        this.paymentCardService = paymentCardService;
-        this.orderService = orderService;
-    }
 
     @PreAuthorize("#authUser.id == #userId")
     @GetMapping("/checkout/{userId}")

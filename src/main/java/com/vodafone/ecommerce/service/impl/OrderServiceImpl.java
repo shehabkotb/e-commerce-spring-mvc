@@ -19,19 +19,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
+    @Autowired
     OrderRepository orderRepository;
+    @Autowired
     private CartRepository cartRepository;
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private CartItemRepository cartItemRepository;
 
-    @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CartRepository cartRepository, UserRepository userRepository, CartItemRepository cartItemRepository) {
-        this.orderRepository = orderRepository;
-        this.cartRepository = cartRepository;
-        this.userRepository = userRepository;
-        this.cartItemRepository = cartItemRepository;
-    }
+
 
     @Override
     public List<OrderDto> getAllOrdersByUserId(Long userId) {
