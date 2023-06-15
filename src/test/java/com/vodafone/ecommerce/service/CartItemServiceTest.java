@@ -1,4 +1,4 @@
-package com.vodafone.service;
+package com.vodafone.ecommerce.service;
 
 import com.vodafone.ecommerce.model.CartItem;
 import com.vodafone.ecommerce.repository.CartItemRepository;

@@ -1,4 +1,4 @@
-package com.vodafone.service;
+package com.vodafone.ecommerce.service;
 
 import com.vodafone.ecommerce.dto.ProductDto;
 import com.vodafone.ecommerce.enums.Category;
