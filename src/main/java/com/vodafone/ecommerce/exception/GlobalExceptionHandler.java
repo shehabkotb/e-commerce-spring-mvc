@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
         mav.addObject("message", notFoundException.getMessage());
         mav.addObject("timestamp", new Date().toString());
         mav.addObject("status", 404);
-        mav.setViewName("notFound-exception");
+        mav.setViewName("notFoundException-page");
         return mav;
     }
 
