@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         mav.addObject("message", notFoundException.getMessage());
         mav.addObject("timestamp", new Date().toString());
         mav.addObject("status", 404);
-        mav.setViewName("notFoundException-page");
+        mav.setViewName("error");
         return mav;
     }
 
@@ -62,14 +62,6 @@ public class GlobalExceptionHandler {
         mav.setViewName("wrong-url");
         return mav;
     }
-
-//    @ExceptionHandler(Exception.class)
-//    protected ModelAndView handleException(Exception exception) {
-//        ModelAndView mav = new ModelAndView();
-//        mav.addObject("message", exception.getMessage());
-//        mav.setViewName("error-page");
-//        return mav;
-//    }
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(HttpServletRequest request, Exception ex) {
