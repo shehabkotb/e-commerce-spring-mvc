@@ -9,7 +9,6 @@
 *** Thanks again! Now go create something AMAZING! :D
 -->
 
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -30,18 +29,12 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 A Tech E-commerce application with admin panel where admins can add or edit products and admins, Authentication for customers with email verfication, and locking meachanism for accounts when they exceed maximum number of allowed login count.
 
 Custmomer can checkout Products added to cart and pay by card which is provided by another payment service.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -53,10 +46,6 @@ This project is built with the following Technolgies.
 * [![Mysql][Mysql]][Mysql-url]
 * [![Bootstrap][Bootstrap]][Bootstrap-url]
 * [![Thymeleaf][Thymeleaf]][Thymeleaf-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -88,7 +77,6 @@ spring.datasource.password=P@ssw0rd
 
 Next you should import the project in your IDE of choice and run the spring-boot application.
 
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
@@ -98,8 +86,6 @@ This project couldn't have been possible without the team
 - Ibrahem Khaled
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
