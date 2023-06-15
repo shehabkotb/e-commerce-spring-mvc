@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @ControllerAdvice
@@ -59,6 +60,23 @@ public class GlobalExceptionHandler {
         mav.addObject("status", 405);
         mav.setViewName("wrong-url");
         return mav;
+    }
+
+//    @ExceptionHandler(Exception.class)
+//    protected ModelAndView handleException(Exception exception) {
+//        ModelAndView mav = new ModelAndView();
+//        mav.addObject("message", exception.getMessage());
+//        mav.setViewName("error-page");
+//        return mav;
+//    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(HttpServletRequest request, Exception ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("errorMessage", ex.getMessage());
+        modelAndView.addObject("url", request.getRequestURL());
+        modelAndView.setViewName("error");
+        return modelAndView;
     }
 
 }

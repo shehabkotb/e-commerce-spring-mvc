@@ -28,9 +28,9 @@ public class UserEntity {
     private Role role;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Order> orders;
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private ShoppingCart cart;
     @ColumnDefault("0")
     private Integer loginFailureCount;
