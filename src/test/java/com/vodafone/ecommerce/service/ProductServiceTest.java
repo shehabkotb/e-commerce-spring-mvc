@@ -3,6 +3,7 @@ package com.vodafone.ecommerce.service;
 import com.vodafone.ecommerce.dto.ProductDto;
 import com.vodafone.ecommerce.enums.Category;
 import com.vodafone.ecommerce.enums.Role;
+import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.model.Product;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.ProductRepository;
@@ -14,11 +15,11 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
@@ -29,6 +30,102 @@ import static org.mockito.Mockito.times;
     ProductRepository productRepository;
     @InjectMocks
     ProductServiceImpl productService;
+
+    @Test
+    void findAllProductsByCategoryTest_findAllProductsByCategory_thenReturnProductWithThisCategory(){
+        //Arrange
+        Product product1= Product.builder()
+                .category(Category.LAPTOPS)
+                .build();
+        Product product2= Product.builder()
+                .category(Category.MOBILE)
+                .build();
+        Product product3= Product.builder()
+                .category(Category.LAPTOPS)
+                .build();
+
+        List<Product> products = Arrays.asList(product1, product2, product3);
+        //Act
+        when(productRepository.findAll()).thenReturn(products);
+
+        ProductDto productDto1= ProductDto.builder()
+                .category(Category.LAPTOPS)
+                .build();
+        ProductDto productDto2= ProductDto.builder()
+                .category(Category.LAPTOPS)
+                .build();
+
+        List<ProductDto> expectedProducts = Arrays.asList(productDto1,productDto2);
+
+        List<ProductDto> actualProducts = productService.findAllProductsByCategory(String.valueOf(Category.LAPTOPS));
+        //Assert
+        assertNotNull(actualProducts);
+        assertEquals(expectedProducts.size(),actualProducts.size());
+
+
+    }
+    @Test
+    void findAllProductsByName_findAllProductsByName_thenReturnProductWithThisName(){
+        //Arrange
+        Product product1= Product.builder()
+                .category(Category.LAPTOPS)
+                .name("p1")
+                .build();
+        Product product2= Product.builder()
+                .category(Category.MOBILE)
+                .name("p2")
+                .build();
+        Product product3= Product.builder()
+                .category(Category.LAPTOPS)
+                .name("p1")
+                .build();
+
+        List<Product> products = Arrays.asList(product1, product2, product3);
+        //Act
+        when(productRepository.findAll()).thenReturn(products);
+
+        ProductDto productDto1= ProductDto.builder()
+                .category(Category.LAPTOPS)
+                .name("p1")
+                .build();
+        ProductDto productDto2= ProductDto.builder()
+                .category(Category.LAPTOPS)
+                .name("p1")
+                .build();
+
+        List<ProductDto> expectedProducts = Arrays.asList(productDto1,productDto2);
+
+        List<ProductDto> actualProducts = productService.findAllProductsByName("p1");
+        //Assert
+        assertNotNull(actualProducts);
+        assertEquals(expectedProducts.size(),actualProducts.size());
+
+
+    }
+    @Test
+    void findAllProductsTest_findAllProducts_thenReturnAllProduct(){
+        //Arrange
+        Product product1= Product.builder()
+                .category(Category.LAPTOPS)
+                .build();
+        Product product2= Product.builder()
+                .category(Category.MOBILE)
+                .build();
+        Product product3= Product.builder()
+                .category(Category.LAPTOPS)
+                .build();
+
+        List<Product> products = Arrays.asList(product1, product2, product3);
+        //Act
+        when(productRepository.findAll()).thenReturn(products);
+
+        List<Product> actualProducts = productService.getAllProducts();
+        //Assert
+        assertNotNull(actualProducts);
+        assertEquals(3,actualProducts.size());
+
+
+    }
 
     @Test
     void findProductByIdTest_findProductById_returnProduct(){
@@ -130,8 +227,24 @@ import static org.mockito.Mockito.times;
         productService.deleteProduct(product.getId());
 
         //Assert
-        verify(productRepository).deleteById(product.getId());
+        verify(productRepository,times(1)).deleteById(product.getId());
+    }
+    @Test
+    void deleteProductTest_deleteProductNotExist_throwNotFound(){
+        //Arrange
+        Product product= Product.builder()
+                .id(1L)
+                .category(Category.MOBILE)
+                .description("desc")
+                .price(12.0)
+                .name("lab")
+                .stockQuantity(10L)
+                .build();
+        //Act
+        when(productRepository.findById(product.getId())).thenReturn(Optional.empty());
 
+        //Assert
+        assertThrows(NotFoundException.class,()-> productService.deleteProduct(product.getId()));
     }
     @Test
     void updateProductTest_updateProduct_returnUpdatedProduct(){
