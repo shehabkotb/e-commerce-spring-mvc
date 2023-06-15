@@ -36,7 +36,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {
             String authorityName = grantedAuthority.getAuthority();
-            if (authorityName.equals("ROLE_ADMIN")) {
+            if (authorityName.equals("ROLE_ADMIN") || authorityName.equals("ROLE_SUPER_ADMIN")) {
                 // if the user is an ADMIN delegate to the adminSuccessHandler
                 this.adminSuccessHandler.onAuthenticationSuccess(request, response, authentication);
                 return;
