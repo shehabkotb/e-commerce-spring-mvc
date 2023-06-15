@@ -1,6 +1,7 @@
 package com.vodafone.ecommerce.service;
 
 import com.vodafone.ecommerce.dto.CartItemDto;
+import com.vodafone.ecommerce.model.ShoppingCart;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface CartService {
     boolean updateCartProduct(Long userId, Long productId, Long newQuantity);
 
     int getCartTotalItemCount(Long userId);
+    ShoppingCart findByUserId(Long userId);
+    void saveCart(ShoppingCart cart);
 }
