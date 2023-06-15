@@ -9,6 +9,7 @@ import com.vodafone.ecommerce.service.AdminService;
 import com.vodafone.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +56,6 @@ public class AdminController {
         model.addAttribute("product", product);
         return "admin-addProduct";
     }
-
     @PostMapping("/admin/products/add")
     public String adminSaveProduct(@Valid @ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, Model model) {
 
@@ -69,7 +69,7 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
-
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/admin/users/add")
     public String adminAddAdmin(Model model) {
         UserEntity user = new UserEntity();
@@ -77,6 +77,7 @@ public class AdminController {
         return "admin-addAdmin";
     }
 
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping("/admin/users/add")
     public String adminSaverAdmin(@Valid @ModelAttribute("UserEntity") UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -90,6 +91,7 @@ public class AdminController {
 
     }
 
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/admin/{adminId}/edit")
     public String editAdminForm(@PathVariable("adminId") Long adminId, Model model) {
         UserDto user = adminService.findAdminById(adminId);
@@ -97,6 +99,7 @@ public class AdminController {
         return "admin-editAdmin";
     }
 
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping("/admin/{adminId}/edit")
     public String updateAdmin(@PathVariable("adminId") Long adminId,
                               @Valid @ModelAttribute("UserEntity") UserDto admin,
@@ -109,11 +112,13 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/admin/{adminId}/delete")
     public String deleteAdmin(@PathVariable("adminId") Long adminId) {
         adminService.deleteAdmin(adminId);
         return "redirect:/admin/users";
     }
+
 
     @GetMapping("/admin/products/{productId}/delete")
     public String adminDeleteProduct(@PathVariable("productId") Long productId) {

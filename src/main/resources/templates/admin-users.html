@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:replace="fragments/general.html :: header-files"/>
 
@@ -13,7 +13,7 @@
 <div class="container p-6 pt-3">
     <div class="d-flex justify-content-between mt-3 mb-4 p-2">
         <h2>Admin Management</h2>
-        <a class="btn btn-outline-dark align-middle" th:href="@{/admin/users/add}">Add Admin</a>
+        <a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" class="btn btn-outline-dark align-middle" th:href="@{/admin/users/add}">Add Admin</a>
     </div>
     <div class="table-responsive">
 
@@ -39,9 +39,13 @@
                     </div>
                 </td>
                 <td class="align-middle text-end">
-
-                    <a class="btn btn-primary" th:href="@{/admin/{adminId}/edit(adminId=${user.id})}">edit</a> |
-                    <a class="btn btn-primary" th:href="@{/admin/{adminId}/delete(adminId=${user.id})}">remove</a>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        Super Admin Privilege Required
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_SUPER_ADMIN')">
+                        <a class="btn btn-primary" th:href="@{/admin/{adminId}/edit(adminId=${user.id})}">edit</a> |
+                        <a class="btn btn-primary" th:href="@{/admin/{adminId}/delete(adminId=${user.id})}">remove</a>
+                    </div>
                 </td>
             </tr>
             </tbody>

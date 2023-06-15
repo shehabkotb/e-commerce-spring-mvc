@@ -71,7 +71,7 @@ import static org.mockito.Mockito.*;
         when(verificationTokenRepository.save(any(VerificationToken.class))).thenReturn(verificationToken);
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
 
-        UserDto userDto = userService.saveUser(registrationDto);
+        UserDto userDto = userService.registerUser(registrationDto);
 
         //Assert
         assertNotNull(userDto);

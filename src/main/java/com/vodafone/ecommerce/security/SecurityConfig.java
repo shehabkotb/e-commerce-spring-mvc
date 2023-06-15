@@ -38,7 +38,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests(
                         (requests) -> requests.antMatchers("/login", "/register", "/reset", "/confirm-account/**", "/css/**", "/js/**").permitAll()
-                                .antMatchers("/admin/**").hasRole("ADMIN")
+                                .antMatchers("/admin/**").hasAnyRole("SUPER_ADMIN", "ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

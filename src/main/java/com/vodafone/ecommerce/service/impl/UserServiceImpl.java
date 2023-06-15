@@ -5,6 +5,7 @@ import com.vodafone.ecommerce.dto.UserDto;
 import com.vodafone.ecommerce.enums.Role;
 import com.vodafone.ecommerce.enums.Status;
 import com.vodafone.ecommerce.exception.InvalidConfirmationToken;
+import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.mapper.UserEntityMapper;
 import com.vodafone.ecommerce.model.VerificationToken;
 import com.vodafone.ecommerce.model.UserEntity;
@@ -23,23 +24,21 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final VerificationTokenRepository verificationTokenRepository;
-    private final JavaMailSender mailSender;
-    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+    @Autowired
+    private JavaMailSender mailSender;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Value("${server.port}")
     private String serverPort;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, VerificationTokenRepository verificationTokenRepository, JavaMailSender mailSender, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.verificationTokenRepository = verificationTokenRepository;
-        this.mailSender = mailSender;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
-    public UserDto saveUser(RegistrationDto registrationDto) throws MessagingException {
+    public UserDto registerUser(RegistrationDto registrationDto) throws MessagingException {
 
         if (userRepository.existsByEmail(registrationDto.getEmail())) {
             throw new DataIntegrityViolationException("Email Already Exists");
@@ -105,5 +104,10 @@ public class UserServiceImpl implements UserService {
         user.setLoginFailureCount(0);
         userRepository.save(user);
         verificationTokenRepository.deleteById(token.getTokenId());
+    }
+    @Override
+    public UserEntity getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("This User doesn't exist."));
     }
 }

@@ -14,7 +14,7 @@ public class UserDto {
     @NotBlank(message = "userName Should not be Empty")
     private String username;
     @NotBlank(message = "Email Shouldn't be Null")
-    @Email
+    @Email(regexp = ".+@.+\\..+")
     private String email;
     private Role role;
     @NotBlank(message = "password Should not be Empty")

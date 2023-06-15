@@ -4,35 +4,24 @@ import com.vodafone.ecommerce.dto.PaymentDto;
 import com.vodafone.ecommerce.exception.InsufficientBalanceException;
 import com.vodafone.ecommerce.exception.InvalidCardException;
 import com.vodafone.ecommerce.exception.NotFoundException;
-import com.vodafone.ecommerce.model.PaymentCard;
-import com.vodafone.ecommerce.service.CartItemSerivce;
-import com.vodafone.ecommerce.service.PaymentCardService;
 import com.vodafone.ecommerce.service.impl.PaymentCardServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.doNothing;
-import static org.mockito.BDDMockito.when;
-import org.springframework.test.context.TestPropertySource;
+
 
 
 

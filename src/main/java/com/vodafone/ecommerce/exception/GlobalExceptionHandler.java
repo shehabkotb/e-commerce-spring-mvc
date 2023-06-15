@@ -1,6 +1,7 @@
 package com.vodafone.ecommerce.exception;
 
 import com.vodafone.ecommerce.security.CustomUserDetails;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @ControllerAdvice
@@ -27,7 +29,7 @@ public class GlobalExceptionHandler {
         mav.addObject("message", notFoundException.getMessage());
         mav.addObject("timestamp", new Date().toString());
         mav.addObject("status", 404);
-        mav.setViewName("notFoundException-page");
+        mav.setViewName("error");
         return mav;
     }
 
@@ -59,6 +61,15 @@ public class GlobalExceptionHandler {
         mav.addObject("status", 405);
         mav.setViewName("wrong-url");
         return mav;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(HttpServletRequest request, Exception ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("errorMessage", ex.getMessage());
+        modelAndView.addObject("url", request.getRequestURL());
+        modelAndView.setViewName("error");
+        return modelAndView;
     }
 
 }
