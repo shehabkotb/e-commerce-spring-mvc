@@ -6,23 +6,27 @@ import com.vodafone.ecommerce.exception.InvalidCardException;
 import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.service.PaymentCardService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@AllArgsConstructor
 public class PaymentCardServiceImpl implements PaymentCardService {
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${payment.service.url}")
+    private String paymentServiceUrl;
 
     @Override
     public String payFromPaymentCard(PaymentDto paymentDto) {
-        String uri = "http://localhost:8082/vending_machine/webapi/payments";
         HttpEntity<PaymentDto> request = new HttpEntity<>(paymentDto);
         PaymentDto paymentCard1 = null;
         try {
-            paymentCard1 = restTemplate.postForObject(uri, request, PaymentDto.class);
+            paymentCard1 = restTemplate.postForObject(paymentServiceUrl, request, PaymentDto.class);
             System.out.println(paymentCard1);
 
         } catch (HttpClientErrorException exception) {

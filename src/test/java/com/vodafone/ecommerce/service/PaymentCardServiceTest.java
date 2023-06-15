@@ -38,7 +38,7 @@ public class PaymentCardServiceTest {
 
     @InjectMocks
     private PaymentCardServiceImpl paymentCardService;
-
+  
     @Test
     void payFromPaymentCardTest_payFromPaymentCard_returnPaySuccess(){
         //Arrange

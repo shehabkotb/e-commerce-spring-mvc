@@ -8,6 +8,7 @@ import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.service.AdminService;
 import com.vodafone.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +22,14 @@ import javax.validation.Valid;
 
 
 @Controller
-@AllArgsConstructor
 public class AdminController {
 
-    private final ProductService productService;
-    private final PasswordEncoder passwordEncoder;
-    private final AdminService adminService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AdminService adminService;
 
 
     @GetMapping(value = {"/admin", "/admin/dashboard"})

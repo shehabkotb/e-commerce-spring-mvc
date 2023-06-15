@@ -13,12 +13,12 @@ services:
     #      ports:
     #        - "3307:3306"
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
+      - ./payment-service/db:/docker-entrypoint-initdb.d
 
   payment:
     image: tomcat
     volumes:
-      - ./vending_machine.war:/usr/local/tomcat/webapps/vending_machine.war
+      - ./payment-service/paymentService.war:/usr/local/tomcat/webapps/vending_machine.war
     ports:
       - '8082:8080'
     links:

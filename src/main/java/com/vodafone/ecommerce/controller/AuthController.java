@@ -3,6 +3,7 @@ package com.vodafone.ecommerce.controller;
 import com.vodafone.ecommerce.dto.RegistrationDto;
 import com.vodafone.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,10 +16,10 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @Controller
-@AllArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/login")
     public String loginPage() {

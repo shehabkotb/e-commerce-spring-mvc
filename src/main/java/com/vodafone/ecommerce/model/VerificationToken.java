@@ -16,7 +16,7 @@ import java.util.UUID;
 public class VerificationToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="token_id")
     private Long tokenId;
 
