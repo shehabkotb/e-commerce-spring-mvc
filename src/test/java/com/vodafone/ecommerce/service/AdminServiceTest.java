@@ -29,12 +29,6 @@ import static org.mockito.Mockito.*;
 class AdminServiceTest {
     @Mock
     UserRepository userRepository;
-    @Mock
-    private PasswordEncoder passwordEncoder;
-//    @Mock
-//    private UserConfig userConfig;
-
-
 
     @InjectMocks
     private AdminServiceImpl adminService;
