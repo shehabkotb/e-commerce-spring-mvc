@@ -13,12 +13,9 @@ import java.util.List;
 
 @Controller
 public class ProductController {
+    @Autowired
     private ProductService productService;
 
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping(value = {"/", "/products"})
     public String listProducts(@RequestParam(required = false, defaultValue = "") String searchBy, @RequestParam(required = false, defaultValue = "") String query, Model model) {

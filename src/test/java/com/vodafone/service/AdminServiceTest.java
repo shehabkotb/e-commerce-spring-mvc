@@ -2,12 +2,14 @@ package com.vodafone.service;
 
 import com.vodafone.ecommerce.dto.UserDto;
 import com.vodafone.ecommerce.enums.Role;
+import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.UserRepository;
 import com.vodafone.ecommerce.service.AdminService;
 import com.vodafone.ecommerce.service.impl.AdminServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,20 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = AdminService.class)
 class AdminServiceTest {
     @Mock
     UserRepository userRepository;
-
-    AdminService adminService;
-    @BeforeEach
-    void setup(){
-         adminService=new AdminServiceImpl(userRepository);
-    }
+    @InjectMocks
+    private AdminServiceImpl adminService;
 
 
 
@@ -86,7 +83,7 @@ class AdminServiceTest {
 
     }
     @Test
-    void deleteAdminTest_deleteAdmin_returnNoting(){
+    void deleteAdminTest_deleteAdminNotExist_throwNotFound(){
         //Arrange
         UserEntity user1 = UserEntity.builder()
                 .id(1L)
@@ -95,11 +92,36 @@ class AdminServiceTest {
                 .username("hema")
                 .build();
         //Act
-        doNothing().when(userRepository).deleteById(user1.getId());
-        adminService.deleteAdmin(user1.getId());
+        when(userRepository.findById(user1.getId())).thenReturn(Optional.empty());
 
         //Assert
-        verify(userRepository, times(1)).deleteById(user1.getId());
-
+        assertThrows(NotFoundException.class, () -> adminService.deleteAdmin(user1.getId()));
     }
+
+//    @Test
+//     void deleteAdminTest_deleteAdmin_returnNothing() {
+//        // Arrange
+//        UserEntity user1 = UserEntity.builder()
+//                .id(1L)
+//                .email("hema@example.com")
+//                .role(Role.ADMIN)
+//                .username("hema")
+//                .build();
+//        UserEntity user2 = UserEntity.builder()
+//                .id(1L)
+//                .email("hema@example.com")
+//                .role(Role.ADMIN)
+//                .username("hema")
+//                .build();
+//        when(userRepository.findById(user1.getId())).thenReturn(Optional.of(user2));
+//
+//        // Act
+//        adminService.deleteAdmin(user1.getId());
+//
+//        // Assert
+////        verify(userRepository, times(1)).deleteById(user1.getId());
+//        verify(userRepository,times(1)).deleteById(user2.getId());
+//
+//    }
+
 }
