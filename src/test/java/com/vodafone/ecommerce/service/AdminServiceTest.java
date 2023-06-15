@@ -7,16 +7,21 @@ import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.UserRepository;
 import com.vodafone.ecommerce.service.AdminService;
 import com.vodafone.ecommerce.service.impl.AdminServiceImpl;
+import org.apache.catalina.startup.UserConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -24,11 +29,46 @@ import static org.mockito.Mockito.*;
 class AdminServiceTest {
     @Mock
     UserRepository userRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+//    @Mock
+//    private UserConfig userConfig;
+
+
+
     @InjectMocks
     private AdminServiceImpl adminService;
 
 
+    @Test
+    void saveAdminTest_saveAdmin_returnAdmin() {
+        // Arrange
 
+        UserEntity user1 = UserEntity.builder()
+                .id(1L)
+                .email("he@example.com")
+                .role(Role.ADMIN)
+                .username("he")
+                .build();
+        UserDto user2 = UserDto.builder()
+                .id(1L)
+                .email("he@example.com")
+                .role(Role.ADMIN)
+                .username("he")
+                .build();
+
+
+        // Act
+        when(userRepository.save(any(UserEntity.class))).thenReturn(user1);
+
+        // Call savAdmin() method of the adminService object
+        UserDto userDto = adminService.saveAdmin(user2);
+        // Assert
+        assertThat(userDto).isNotNull();
+        assertEquals(user1.getId(), userDto.getId());
+        assertEquals(user1.getUsername(), userDto.getUsername());
+        assertEquals(user1.getRole(), userDto.getRole());
+    }
     @Test
      void getAllAdminTest_addAdmin_returnListOfAdmin() {
         // Arrange
@@ -82,6 +122,76 @@ class AdminServiceTest {
         assertEquals(user.getRole(),user1.getRole());
 
     }
+    @Test
+    void updateAdminTest_updateAdminNotExist_throwNotFound(){
+        //Arrange
+        UserEntity user1 = UserEntity.builder()
+                .id(1L)
+                .email("hema@example.com")
+                .role(Role.ADMIN)
+                .username("hema")
+                .build();
+        UserDto user2 = UserDto.builder()
+                .id(1L)
+                .email("he@example.com")
+                .role(Role.ADMIN)
+                .username("he")
+                .build();
+        //Act
+        when(userRepository.findById(user1.getId())).thenReturn(Optional.empty());
+
+        //Assert
+        assertThrows(NotFoundException.class, () -> adminService.updateAdmin(user2,user2.getId()));
+    }
+
+    @Test
+    void updateAdminTest_updateAdminExistByEmail_throwDataIntegrityViolationException(){
+        //Arrange
+        UserEntity user1 = UserEntity.builder()
+                .id(1L)
+                .email("hema@example.com")
+                .role(Role.ADMIN)
+                .username("hema")
+                .build();
+        UserDto user2 = UserDto.builder()
+                .id(1L)
+                .email("he@example.com")
+                .role(Role.ADMIN)
+                .username("he")
+                .build();
+        //Act
+        when(userRepository.findById(user1.getId())).thenReturn(Optional.of(user1));
+        when(userRepository.existsByEmail(user2.getEmail())).thenReturn(true);
+
+
+        //Assert
+        assertThrows(DataIntegrityViolationException.class, () -> adminService.updateAdmin(user2,user1.getId()));
+    }
+    @Test
+    void updateAdminTest_updateAdminExistByUserName_throwDataIntegrityViolationException(){
+        //Arrange
+        UserEntity user1 = UserEntity.builder()
+                .id(1L)
+                .email("hema@example.com")
+                .role(Role.ADMIN)
+                .username("hema")
+                .build();
+        UserDto user2 = UserDto.builder()
+                .id(1L)
+                .email("he@example.com")
+                .role(Role.ADMIN)
+                .username("he")
+                .build();
+        //Act
+        when(userRepository.findById(user1.getId())).thenReturn(Optional.of(user1));
+        when(userRepository.existsByusername(user2.getUsername())).thenReturn(true);
+
+
+        //Assert
+        assertThrows(DataIntegrityViolationException.class, () -> adminService.updateAdmin(user2,user1.getId()));
+    }
+
+
     @Test
     void deleteAdminTest_deleteAdminNotExist_throwNotFound(){
         //Arrange
