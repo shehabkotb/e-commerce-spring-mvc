@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     //Todo handle exception for down mail server
-    private void sendVerificationEmail(UserEntity user) throws MessagingException {
+    public void sendVerificationEmail(UserEntity user) throws MessagingException {
 
         VerificationToken verificationToken = new VerificationToken(user);
         verificationTokenRepository.save(verificationToken);
@@ -84,6 +84,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetAccount(String email) throws MessagingException {
+        //Todo:Throw here
         if (!userRepository.existsByEmail(email)) {
             return;
         }
