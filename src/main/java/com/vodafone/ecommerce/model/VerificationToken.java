@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name="confirmationToken")
-public class ConfirmationToken {
+public class VerificationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class ConfirmationToken {
     private UserEntity user;
 
 
-    public ConfirmationToken(UserEntity user) {
+    public VerificationToken(UserEntity user) {
         this.user = user;
         createdDate = new Date();
         confirmationToken = UUID.randomUUID().toString();

@@ -57,10 +57,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long productId) {
-        if (productRepository.findById(productId).isPresent()) {
-            productRepository.deleteById(productId);
-        }
-        throw new NotFoundException("This Product doesn't exist.");
+        productRepository.findById(productId).orElseThrow(()->
+                new  NotFoundException("This Product doesn't exist."));
+        productRepository.deleteById(productId);
     }
 
     @Override

@@ -7,9 +7,9 @@ import com.vodafone.ecommerce.enums.Status;
 import com.vodafone.ecommerce.exception.InvalidConfirmationToken;
 import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.mapper.UserEntityMapper;
-import com.vodafone.ecommerce.model.ConfirmationToken;
+import com.vodafone.ecommerce.model.VerificationToken;
 import com.vodafone.ecommerce.model.UserEntity;
-import com.vodafone.ecommerce.repository.ConfirmationTokenRepository;
+import com.vodafone.ecommerce.repository.VerificationTokenRepository;
 import com.vodafone.ecommerce.repository.UserRepository;
 import com.vodafone.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,11 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ConfirmationTokenRepository confirmationTokenRepository;
+    private VerificationTokenRepository verificationTokenRepository;
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
@@ -64,11 +65,11 @@ public class UserServiceImpl implements UserService {
     }
 
     //Todo handle exception for down mail server
-    private void sendVerificationEmail(UserEntity user) throws MessagingException {
+    public void sendVerificationEmail(UserEntity user) throws MessagingException {
 
-        ConfirmationToken confirmationToken = new ConfirmationToken(user);
-        confirmationTokenRepository.save(confirmationToken);
-        String token = confirmationToken.getConfirmationToken();
+        VerificationToken verificationToken = new VerificationToken(user);
+        verificationTokenRepository.save(verificationToken);
+        String token = verificationToken.getConfirmationToken();
 
         String link = "http://localhost:" + serverPort + "/confirm-account/" + token;
         String links = "<a href='" + link + "'>" + "Verify" + "</a>";
@@ -82,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetAccount(String email) throws MessagingException {
+        //Todo:Throw here
         if (!userRepository.existsByEmail(email)) {
             return;
         }
@@ -91,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void confirmEmail(String confirmationToken) {
-        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+        VerificationToken token = verificationTokenRepository.findByConfirmationToken(confirmationToken);
 
         if (token == null) {
             throw new InvalidConfirmationToken("Invalid Confirmation Token");
@@ -101,7 +103,7 @@ public class UserServiceImpl implements UserService {
         user.setStatus(Status.ACTIVE);
         user.setLoginFailureCount(0);
         userRepository.save(user);
-        confirmationTokenRepository.deleteById(token.getTokenId());
+        verificationTokenRepository.deleteById(token.getTokenId());
     }
     @Override
     public UserEntity getUserById(Long userId) {
