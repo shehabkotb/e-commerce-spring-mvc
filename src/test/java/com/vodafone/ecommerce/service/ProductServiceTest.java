@@ -2,12 +2,9 @@ package com.vodafone.ecommerce.service;
 
 import com.vodafone.ecommerce.dto.ProductDto;
 import com.vodafone.ecommerce.enums.Category;
-import com.vodafone.ecommerce.enums.Role;
 import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.model.Product;
-import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.ProductRepository;
-import com.vodafone.ecommerce.service.ProductService;
 import com.vodafone.ecommerce.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,25 +19,24 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @SpringBootTest(classes = ProductService.class)
- class ProductServiceTest {
+class ProductServiceTest {
     @Mock
     ProductRepository productRepository;
     @InjectMocks
     ProductServiceImpl productService;
 
     @Test
-    void findAllProductsByCategoryTest_findAllProductsByCategory_thenReturnProductWithThisCategory(){
+    void findAllProductsByCategoryTest_findAllProductsByCategory_thenReturnProductWithThisCategory() {
         //Arrange
-        Product product1= Product.builder()
+        Product product1 = Product.builder()
                 .category(Category.LAPTOPS)
                 .build();
-        Product product2= Product.builder()
+        Product product2 = Product.builder()
                 .category(Category.MOBILE)
                 .build();
-        Product product3= Product.builder()
+        Product product3 = Product.builder()
                 .category(Category.LAPTOPS)
                 .build();
 
@@ -48,70 +44,73 @@ import static org.mockito.Mockito.times;
         //Act
         when(productRepository.findAll()).thenReturn(products);
 
-        ProductDto productDto1= ProductDto.builder()
+        ProductDto productDto1 = ProductDto.builder()
                 .category(Category.LAPTOPS)
                 .build();
-        ProductDto productDto2= ProductDto.builder()
+        ProductDto productDto2 = ProductDto.builder()
                 .category(Category.LAPTOPS)
                 .build();
 
-        List<ProductDto> expectedProducts = Arrays.asList(productDto1,productDto2);
+        List<ProductDto> expectedProducts = Arrays.asList(productDto1, productDto2);
 
         List<ProductDto> actualProducts = productService.findAllProductsByCategory(String.valueOf(Category.LAPTOPS));
         //Assert
         assertNotNull(actualProducts);
-        assertEquals(expectedProducts.size(),actualProducts.size());
+        assertEquals(expectedProducts.size(), actualProducts.size());
 
 
     }
+
     @Test
-    void findAllProductsByName_findAllProductsByName_thenReturnProductWithThisName(){
+    void findAllProductsByName_findAllProductsByName_thenReturnProductWithThisName() {
         //Arrange
-        Product product1= Product.builder()
+        Product product1 = Product.builder()
                 .category(Category.LAPTOPS)
                 .name("p1")
                 .build();
-        Product product2= Product.builder()
+        Product product2 = Product.builder()
                 .category(Category.MOBILE)
                 .name("p2")
                 .build();
-        Product product3= Product.builder()
+        Product product3 = Product.builder()
                 .category(Category.LAPTOPS)
                 .name("p1")
                 .build();
 
         List<Product> products = Arrays.asList(product1, product2, product3);
         //Act
-        when(productRepository.findAll()).thenReturn(products);
+        when(productRepository.findByNameContaining("p1")).thenReturn(Arrays.asList(product1, product2));
 
-        ProductDto productDto1= ProductDto.builder()
+        ProductDto productDto1 = ProductDto.builder()
                 .category(Category.LAPTOPS)
                 .name("p1")
                 .build();
-        ProductDto productDto2= ProductDto.builder()
+        ProductDto productDto2 = ProductDto.builder()
                 .category(Category.LAPTOPS)
                 .name("p1")
                 .build();
 
-        List<ProductDto> expectedProducts = Arrays.asList(productDto1,productDto2);
+        List<ProductDto> expectedProducts = Arrays.asList(productDto1, productDto2);
+
 
         List<ProductDto> actualProducts = productService.findAllProductsByName("p1");
         //Assert
         assertNotNull(actualProducts);
-        assertEquals(expectedProducts.size(),actualProducts.size());
+        assertEquals(expectedProducts.size(), actualProducts.size());
 
 
     }
+
     @Test
-    void findAllProductsTest_findAllProducts_thenReturnAllProduct(){
+    void findAllProductsTest_findAllProducts_thenReturnAllProduct() {
         //Arrange
-        Product product1= Product.builder()
+        Product product1 = Product.builder()
                 .category(Category.LAPTOPS)
                 .build();
-        Product product2= Product.builder()
+        Product product2 = Product.builder()
                 .category(Category.MOBILE)
                 .build();
-        Product product3= Product.builder()
+        Product product3 = Product.builder()
                 .category(Category.LAPTOPS)
                 .build();
 
@@ -122,15 +121,15 @@ import static org.mockito.Mockito.times;
         List<Product> actualProducts = productService.getAllProducts();
         //Assert
         assertNotNull(actualProducts);
-        assertEquals(3,actualProducts.size());
+        assertEquals(3, actualProducts.size());
 
 
     }
 
     @Test
-    void findProductByIdTest_findProductById_returnProduct(){
+    void findProductByIdTest_findProductById_returnProduct() {
         //Arrange
-        Product product= Product.builder()
+        Product product = Product.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -144,17 +143,18 @@ import static org.mockito.Mockito.times;
         ProductDto productDto = productService.findProductById(1L);
         //Assert
         assertNotNull(productDto);
-        assertEquals(product.getStockQuantity(),productDto.getStockQuantity());
-        assertEquals(product.getName(),productDto.getName());
-        assertEquals(product.getDescription(),productDto.getDescription());
-        assertEquals(product.getPrice(),productDto.getPrice());
+        assertEquals(product.getStockQuantity(), productDto.getStockQuantity());
+        assertEquals(product.getName(), productDto.getName());
+        assertEquals(product.getDescription(), productDto.getDescription());
+        assertEquals(product.getPrice(), productDto.getPrice());
 
     }
+
     @Test
-    void findAllProductTest_findAllProduct_returnAllProduct(){
+    void findAllProductTest_findAllProduct_returnAllProduct() {
         //Arrange
-        List<Product> products=new ArrayList<>();
-        Product product1= Product.builder()
+        List<Product> products = new ArrayList<>();
+        Product product1 = Product.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -162,7 +162,7 @@ import static org.mockito.Mockito.times;
                 .name("lab")
                 .stockQuantity(10L)
                 .build();
-        Product product2= Product.builder()
+        Product product2 = Product.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -178,13 +178,14 @@ import static org.mockito.Mockito.times;
         List<ProductDto> allProducts = productService.findAllProducts();
         //Assert
         assertNotNull(products);
-        assertEquals(2,allProducts.size());
+        assertEquals(2, allProducts.size());
 
     }
+
     @Test
-    void saveProductTest_saveProduct_returnProduct(){
+    void saveProductTest_saveProduct_returnProduct() {
         //Arrange
-        Product product= Product.builder()
+        Product product = Product.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -192,7 +193,7 @@ import static org.mockito.Mockito.times;
                 .name("lab")
                 .stockQuantity(10L)
                 .build();
-        ProductDto productDto= ProductDto.builder()
+        ProductDto productDto = ProductDto.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -206,15 +207,16 @@ import static org.mockito.Mockito.times;
         Product product1 = productService.saveProduct(productDto);
         //Assert
         assertNotNull(product1);
-        assertEquals(product.getDescription(),product1.getDescription());
-        assertEquals(product.getCategory(),product1.getCategory());
-        assertEquals(product.getName(),product1.getName());
+        assertEquals(product.getDescription(), product1.getDescription());
+        assertEquals(product.getCategory(), product1.getCategory());
+        assertEquals(product.getName(), product1.getName());
 
     }
+
     @Test
-    void deleteProductTest_deleteProduct_returnNoting(){
+    void deleteProductTest_deleteProduct_returnNoting() {
         //Arrange
-        Product product= Product.builder()
+        Product product = Product.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -227,12 +229,13 @@ import static org.mockito.Mockito.times;
         productService.deleteProduct(product.getId());
 
         //Assert
-        verify(productRepository,times(1)).deleteById(product.getId());
+        verify(productRepository, times(1)).deleteById(product.getId());
     }
+
     @Test
-    void deleteProductTest_deleteProductNotExist_throwNotFound(){
+    void deleteProductTest_deleteProductNotExist_throwNotFound() {
         //Arrange
-        Product product= Product.builder()
+        Product product = Product.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -244,12 +247,13 @@ import static org.mockito.Mockito.times;
         when(productRepository.findById(product.getId())).thenReturn(Optional.empty());
 
         //Assert
-        assertThrows(NotFoundException.class,()-> productService.deleteProduct(product.getId()));
+        assertThrows(NotFoundException.class, () -> productService.deleteProduct(product.getId()));
     }
+
     @Test
-    void updateProductTest_updateProduct_returnUpdatedProduct(){
+    void updateProductTest_updateProduct_returnUpdatedProduct() {
         //Arrange
-        Product product= Product.builder()
+        Product product = Product.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")
@@ -257,7 +261,7 @@ import static org.mockito.Mockito.times;
                 .name("lab")
                 .stockQuantity(10L)
                 .build();
-        ProductDto productDto= ProductDto.builder()
+        ProductDto productDto = ProductDto.builder()
                 .id(1L)
                 .category(Category.MOBILE)
                 .description("desc")

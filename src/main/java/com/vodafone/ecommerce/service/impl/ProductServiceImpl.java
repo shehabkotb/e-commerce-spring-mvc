@@ -23,19 +23,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findAllProducts() {
-        return productRepository.findAll().stream().map(ProductMapper::mapToProductDto).collect(Collectors.toList());
+        return productRepository.findAll()
+                .stream()
+                .map(ProductMapper::mapToProductDto).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductDto> findAllProductsByCategory(String query) {
-        return productRepository.findAll().stream().filter((i) -> i.getCategory().name().toLowerCase().contains(query.toLowerCase()))
+        return productRepository.findAll()
+                .stream()
+                .filter((i) -> i.getCategory().name().toLowerCase().contains(query.toLowerCase()))
                 .map(ProductMapper::mapToProductDto).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductDto> findAllProductsByName(String query) {
-        return productRepository.findAll().stream().filter((i) -> i.getName().toLowerCase().contains(query.toLowerCase()))
-                .map(ProductMapper::mapToProductDto).collect(Collectors.toList());
+        return productRepository.findByNameContaining(query).stream().map(ProductMapper::mapToProductDto).collect(Collectors.toList());
     }
 
     @Override
@@ -57,8 +60,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long productId) {
-        productRepository.findById(productId).orElseThrow(()->
-                new  NotFoundException("This Product doesn't exist."));
+        productRepository.findById(productId).orElseThrow(() ->
+                new NotFoundException("This Product doesn't exist."));
         productRepository.deleteById(productId);
     }
 
