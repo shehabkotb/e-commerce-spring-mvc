@@ -14,29 +14,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="confirmationToken")
+@Table(name = "confirmationToken")
 public class VerificationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="token_id")
+    @Column(name = "token_id")
     private Long tokenId;
 
-    @Column(name="confirmation_token")
+    @Column(name = "confirmation_token")
     private String confirmationToken;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    private Instant expiryDate=Instant.now().plus(Duration.ofHours(24));
 
     @OneToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private UserEntity user;
-
-    public boolean isExpired(){
-        return Instant.now().isAfter(expiryDate);
-    }
-
 
     public VerificationToken(UserEntity user) {
         this.user = user;
@@ -44,6 +38,9 @@ public class VerificationToken {
         confirmationToken = UUID.randomUUID().toString();
     }
 
+    public boolean isExpired() {
+        return Instant.now().isAfter(Instant.now().plus(Duration.ofHours(24)));
+    }
 
 
 }
