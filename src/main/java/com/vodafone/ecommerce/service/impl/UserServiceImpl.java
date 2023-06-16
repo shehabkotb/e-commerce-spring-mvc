@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
     public void sendVerificationEmail(UserEntity user) throws MessagingException {
 
         VerificationToken verificationToken = new VerificationToken(user);
+        System.out.println(verificationToken.getConfirmationToken());
         verificationTokenRepository.save(verificationToken);
         String token = verificationToken.getConfirmationToken();
 
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
         message.setRecipients(MimeMessage.RecipientType.TO, user.getEmail());
         message.setSubject("Activate Account!");
         message.setContent("To confirm your account, please click here : " + links, "text/html; charset=utf-8");
-        mailSender.send(message);
+            mailSender.send(message);
     }
 
     @Override
@@ -98,6 +99,13 @@ public class UserServiceImpl implements UserService {
         if (token == null) {
             throw new InvalidConfirmationToken("Invalid Confirmation Token");
         }
+        if (token.isExpired()) {
+            System.out.println(true);
+            verificationTokenRepository.deleteById(token.getTokenId());
+            throw new InvalidConfirmationToken("Invalid Confirmation Token");
+        }
+
+
 
         UserEntity user = token.getUser();
         user.setStatus(Status.ACTIVE);
