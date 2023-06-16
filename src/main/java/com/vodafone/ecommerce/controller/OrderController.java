@@ -26,4 +26,12 @@ public class OrderController {
         model.addAttribute("orderList", orderDtoList);
         return "customer-orders";
     }
+
+    @PreAuthorize("#authUser.id == #userId")
+    @GetMapping("/user/{userId}/orders/{orderId}")
+    public String getOrderDetail(@PathVariable("userId") Long userId, @PathVariable("orderId") Long orderId, Model model, @AuthenticationPrincipal CustomUserDetails authUser) {
+        OrderDto orderDto = orderService.getOrderById(orderId);
+        model.addAttribute("order", orderDto);
+        return "customer-order-detail";
+    }
 }

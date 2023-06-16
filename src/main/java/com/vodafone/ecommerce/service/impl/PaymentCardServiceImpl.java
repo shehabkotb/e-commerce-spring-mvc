@@ -3,11 +3,8 @@ package com.vodafone.ecommerce.service.impl;
 import com.vodafone.ecommerce.dto.PaymentDto;
 import com.vodafone.ecommerce.exception.InsufficientBalanceException;
 import com.vodafone.ecommerce.exception.InvalidCardException;
-import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.service.PaymentCardService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,7 +15,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String paymentServiceUrl="http://localhost:8082/vending_machine/webapi/payments";
+    private String paymentServiceUrl = "http://localhost:8082/vending_machine/webapi/payments";
 
     @Override
     public String payFromPaymentCard(PaymentDto paymentDto) {
@@ -32,7 +29,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
         } catch (HttpClientErrorException exception) {
             System.out.println(exception.getRawStatusCode());
             if (exception.getRawStatusCode() == 404) {
-                throw new NotFoundException("The Card You Enter Not Found");
+                throw new InvalidCardException("The Card is Invalid");
 
             }
             if (exception.getRawStatusCode() == 400) {

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/general.html :: header-files"/>
+    <title>Orders Detail</title>
+    <style>
+         @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+
+
+
+.track {
+position: relative;
+background-color: #ddd;
+height: 7px;
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+margin-bottom: 60px;
+margin-top: 50px
+}
+.track .step {
+-webkit-box-flex: 1;
+-ms-flex-positive: 1;
+flex-grow: 1;
+width: 25%;
+margin-top: -18px;
+text-align: center;
+position: relative
+}
+.track .step.active:before {
+background: #FF5722
+}
+.track .step::before {
+height: 7px;
+position: absolute;
+content: "";
+width: 100%;
+left: 0;
+top: 18px
+}
+.track .step.active .icon {
+background: #ee5435;
+color: #fff
+}
+.track .icon {
+display: inline-block;
+width: 40px;
+height: 40px;
+line-height: 40px;
+position: relative;
+border-radius: 100%;
+background: #ddd
+}
+.track .step.active .text {
+font-weight: 400;
+color: #000
+}
+.track .text {
+display: block;
+margin-top: 7px
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<th:block th:replace="fragments/general.html :: customer-nav"/>
+
+<div class="container px-4 px-lg-5 my-5">
+    <div class="d-flex col-lg-8 mx-auto justify-content-between mb-5">
+        <h2><strong>Order Detail</strong></h2>
+        <a class="btn btn-outline-dark" th:href="@{/user/{userId}/orders(userId=${#authentication.getPrincipal().getId()})}">Go To Orders</a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- List group-->
+            <ul class="list-group shadow">
+
+                <li class="list-group-item">
+                    <h6 th:text="'Order ID: #' + ${order.id}">Order ID</h6>
+                    <article class="card">
+                        <div class="card-body row">
+                            <div class="col"><strong>Placed On:</strong> <br><span th:text="${order.createdAt}">29 nov 2019</span></div>
+                            <div class="col"><strong>Status:</strong> <br> Ready For Delivery</div>
+                            <div class="col"><strong>Total Quantity:</strong> <br> <span th:text="${order.totalQuantity}">Total Quantity</span></div>
+                            <div class="col"><strong>Total Price:</strong> <br> <span th:text="'$' + ${order.totalPrice}">Price</span></div>
+                        </div>
+                    </article>
+                    <div class="track">
+                        <div class="step active"><span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Ready For Delivery</span></div>
+                        <div class="step"><span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span></div>
+                        <div class="step"><span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span></div>
+                        <div class="step"><span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Ready for pickup</span></div>
+                    </div>
+                </li>
+                <!-- list group item-->
+                <li class="list-group-item" th:each="orderItem :${order.orderItemList}">
+                    <!-- Custom content-->
+                    <div class="media align-items-lg-center d-flex justify-content-between p-3">
+                        <div class="media-body order-2 order-lg-1">
+                            <h5 class="mt-0 font-weight-bold mb-0" th:text="${orderItem.product.name}">Awesome product</h5>
+                            <p class="font-italic text-muted mb-2 small" th:text="'Quantity: ' + ${orderItem.quantity}">Quantity</p>
+                            <p class="font-italic text-muted mb-4 small" th:text="${orderItem.product.description}">Description</p>
+                            <div class="mt-1">
+                                <h6 class="text-muted my-2" th:text="${orderItem.quantity} + ' x $' + ${orderItem.product.price}">Quantity x Price</h6>
+                                <h5 class="font-weight-bold my-2" th:text="'Total: $' + ${orderItem.totalPrice}">Total: $360.00</h5>
+                            </div>
+                        </div>
+                        <img alt="Generic placeholder image" class="ml-lg-5 order-1 order-lg-2" th:src="${orderItem.product.photoUrl}" width="200">
+                    </div>
+                    <!-- End -->
+                </li>
+                <!-- End -->
+            </ul>
+            <!-- End -->
+        </div>
+    </div>
+</div>
+</body>
+</html>

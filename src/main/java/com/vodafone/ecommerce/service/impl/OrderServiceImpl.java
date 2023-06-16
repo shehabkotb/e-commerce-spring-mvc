@@ -1,15 +1,14 @@
 package com.vodafone.ecommerce.service.impl;
 
 import com.vodafone.ecommerce.dto.OrderDto;
+import com.vodafone.ecommerce.exception.NotFoundException;
 import com.vodafone.ecommerce.mapper.OrderMapper;
 import com.vodafone.ecommerce.model.Order;
 import com.vodafone.ecommerce.model.OrderItem;
 import com.vodafone.ecommerce.model.ShoppingCart;
 import com.vodafone.ecommerce.model.UserEntity;
 import com.vodafone.ecommerce.repository.CartItemRepository;
-import com.vodafone.ecommerce.repository.CartRepository;
 import com.vodafone.ecommerce.repository.OrderRepository;
-import com.vodafone.ecommerce.repository.UserRepository;
 import com.vodafone.ecommerce.service.CartService;
 import com.vodafone.ecommerce.service.OrderService;
 import com.vodafone.ecommerce.service.UserService;
@@ -31,20 +30,16 @@ public class OrderServiceImpl implements OrderService {
     private CartItemRepository cartItemRepository;
 
 
-
     @Override
     public List<OrderDto> getAllOrdersByUserId(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
-        return orders.stream().map((order) -> OrderMapper.mapToOrderDto(order, getTotalOrderQuantity(order))).collect(Collectors.toList());
-    }
-
-    private Integer getTotalOrderQuantity(Order order) {
-        return order.getOrderItems().stream().reduce(0, (total, orderItem) -> total + orderItem.getQuantity().intValue(), Integer::sum);
+        return orders.stream().map((order) -> OrderMapper.mapToOrderDto(order)).collect(Collectors.toList());
     }
 
     @Override
     public OrderDto getOrderById(Long orderId) {
-        return null;
+        Order result = orderRepository.findOrderById(orderId).orElseThrow(() -> new NotFoundException("This Order Doesn't Exists"));
+        return OrderMapper.mapToOrderDto(result);
     }
 
     @Override
@@ -62,9 +57,11 @@ public class OrderServiceImpl implements OrderService {
                         .build()
         ).collect(Collectors.toList());
 
+        Integer totalQuantity = cartService.getCartTotalItemCount(userId);
 
         newOrder.setUser(user);
         newOrder.setTotalPrice(shoppingCart.getTotalPrice());
+        newOrder.setTotalQuantity(totalQuantity);
         newOrder.setOrderItems(orderItemList);
 
         shoppingCart.setTotalPrice(0D);

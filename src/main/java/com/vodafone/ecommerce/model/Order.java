@@ -25,4 +25,5 @@ public class Order {
     private Double totalPrice;
     @ManyToOne
     private UserEntity user;
+    private Integer totalQuantity;
 }
