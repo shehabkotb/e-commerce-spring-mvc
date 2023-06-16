@@ -3,6 +3,8 @@ package com.vodafone.ecommerce.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,10 +27,15 @@ public class VerificationToken {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    private Instant expiryDate=Instant.now().plus(Duration.ofHours(24));
 
     @OneToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private UserEntity user;
+
+    public boolean isExpired(){
+        return Instant.now().isAfter(expiryDate);
+    }
 
 
     public VerificationToken(UserEntity user) {
