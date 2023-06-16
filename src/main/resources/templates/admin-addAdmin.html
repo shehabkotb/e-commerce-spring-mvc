@@ -7,8 +7,8 @@
 <body>
 <th:block th:replace="fragments/general.html :: admin-nav"/>
 
-<div class="alert alert-warning alert-dismissible fade show text-center" role="alert" th:if="${error}">
-    <span th:text="${errorMessage}}"></span>
+<div class="alert alert-danger alert-dismissible fade show text-center" role="alert" th:if="${param.error}">
+    <span th:text="${param.errorMessage}"></span>
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>
 

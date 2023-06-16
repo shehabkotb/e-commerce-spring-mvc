@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ModelAndView NotFoundException(NotFoundException notFoundException){
+    public ModelAndView NotFoundException(NotFoundException notFoundException) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", notFoundException.getMessage());
         mav.addObject("timestamp", new Date().toString());
@@ -61,6 +61,11 @@ public class GlobalExceptionHandler {
         mav.addObject("status", 405);
         mav.setViewName("wrong-url");
         return mav;
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public String handleDataIntegrityViolation(Exception ex, HttpServletRequest request) {
+        return "redirect:" + request.getRequestURI() + "?error=true&errorMessage=" + ex.getMessage();
     }
 
     @ExceptionHandler(Exception.class)

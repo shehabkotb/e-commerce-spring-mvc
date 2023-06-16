@@ -26,6 +26,10 @@
 
 
 
+
+
+
+
     </style>
 </head>
 <body>
@@ -40,8 +44,8 @@
                     <div class="row">
                         <div class="col-lg-10 col-xl-7 mx-auto">
                             <h3 class="display-4 mb-4">Register</h3>
-                            <div class="alert alert-danger" role="alert" th:if="${param.error}">
-                                Invalid username or password.
+                            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert" th:if="${param.error}">
+                                <span th:text="${param.errorMessage}"></span>
                             </div>
                             <form method="post" th:action="@{/register}" th:object="${user}">
                                 <div class="form-group mb-3">

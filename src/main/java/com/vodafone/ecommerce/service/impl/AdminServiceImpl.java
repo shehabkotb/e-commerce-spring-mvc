@@ -19,13 +19,20 @@ import java.util.stream.Collectors;
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto saveAdmin(UserDto userDto) {
+
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new DataIntegrityViolationException("Email already exists");
+        }
+        if (userRepository.existsByusername(userDto.getUsername())) {
+            throw new DataIntegrityViolationException("Username already exists");
+        }
+
         UserEntity user = UserEntityMapper.mapToUserEntity(userDto);
         user.setRole(Role.ADMIN);
         user.setLoginFailureCount(0);
@@ -49,13 +56,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public UserDto updateAdmin(UserDto userDto, Long adminId) {
-        userRepository.findById(adminId)
+        UserEntity adminToUpdate = userRepository.findById(adminId)
                 .orElseThrow(() -> new NotFoundException("This Admin doesn't exist."));
-        if(userRepository.existsByEmail(userDto.getEmail())){
-            throw new DataIntegrityViolationException("Email is already exist");
+        if (userRepository.existsByEmail(userDto.getEmail()) && !userDto.getEmail().equals(adminToUpdate.getEmail())) {
+            throw new DataIntegrityViolationException("Email already exists");
         }
-        if(userRepository.existsByusername(userDto.getUsername())) {
-            throw new DataIntegrityViolationException("Username is already exist");
+        if (userRepository.existsByusername(userDto.getUsername()) && !userDto.getUsername().equals(adminToUpdate.getUsername())) {
+            throw new DataIntegrityViolationException("Username already exists");
         }
         userDto.setId(adminId);
         String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
