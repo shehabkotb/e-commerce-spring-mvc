@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "confirmationToken")
+@Table(name = "verificationToken")
 public class VerificationToken {
 
     @Id
