@@ -13,6 +13,7 @@ public class ProductMapper {
                 .price(productDto.getPrice())
                 .category(productDto.getCategory())
                 .stockQuantity(productDto.getStockQuantity())
+                .deleted(false)
                 .build();
     }
 
@@ -25,6 +26,7 @@ public class ProductMapper {
                 .price(product.getPrice())
                 .category(product.getCategory())
                 .stockQuantity(product.getStockQuantity())
+                .deleted(product.getDeleted())
                 .build();
     }
 }

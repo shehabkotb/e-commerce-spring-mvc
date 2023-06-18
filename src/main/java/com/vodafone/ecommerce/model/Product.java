@@ -2,6 +2,7 @@ package com.vodafone.ecommerce.model;
 
 import com.vodafone.ecommerce.enums.Category;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -23,4 +24,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category;
     private long stockQuantity;
+    @ColumnDefault("false")
+    private Boolean deleted;
 }

@@ -28,4 +28,5 @@ public class ProductDto {
     private Category category;
     @Min(value = 1, message = "Min stockQuantity is 1")
     private Long stockQuantity;
+    private Boolean deleted;
 }

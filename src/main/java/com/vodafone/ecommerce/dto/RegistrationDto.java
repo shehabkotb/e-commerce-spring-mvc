@@ -19,7 +19,7 @@ public class RegistrationDto {
     @NotBlank(message = "userName Should not be Empty")
     private String username;
     @NotBlank(message = "Email Shouldn't be Null")
-    @Email(message = "Invalid Email")
+    @Email(regexp = ".+@.+\\..+")
     private String email;
     @NotBlank(message = "password Should not be Empty")
     private String password;

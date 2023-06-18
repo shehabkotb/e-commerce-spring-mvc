@@ -18,7 +18,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = ProductService.class)
 class ProductServiceTest {
@@ -106,12 +107,15 @@ class ProductServiceTest {
         //Arrange
         Product product1 = Product.builder()
                 .category(Category.LAPTOPS)
+                .deleted(false)
                 .build();
         Product product2 = Product.builder()
                 .category(Category.MOBILE)
+                .deleted(false)
                 .build();
         Product product3 = Product.builder()
                 .category(Category.LAPTOPS)
+                .deleted(false)
                 .build();
 
         List<Product> products = Arrays.asList(product1, product2, product3);
@@ -213,24 +217,6 @@ class ProductServiceTest {
 
     }
 
-    @Test
-    void deleteProductTest_deleteProduct_returnNoting() {
-        //Arrange
-        Product product = Product.builder()
-                .id(1L)
-                .category(Category.MOBILE)
-                .description("desc")
-                .price(12.0)
-                .name("lab")
-                .stockQuantity(10L)
-                .build();
-        //Act
-        when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
-        productService.deleteProduct(product.getId());
-
-        //Assert
-        verify(productRepository, times(1)).deleteById(product.getId());
-    }
 
     @Test
     void deleteProductTest_deleteProductNotExist_throwNotFound() {

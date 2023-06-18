@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
@@ -28,6 +29,8 @@ public class ProductController {
         } else {
             products = productService.findAllProducts();
         }
+
+        products = products.stream().filter((p) -> !p.getDeleted()).collect(Collectors.toList());
 
         model.addAttribute("products", products);
         return "products-list";
